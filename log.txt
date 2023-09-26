@@ -1,13 +1,16 @@
-26 Septembre:
-History:
-    - Created separate branch
-    - Create separate virtual enviornment
-    - Downloaded openVino
+26 Septembre (2023):
+    History:
+        - Created separate branch
+        - Create separate virtual enviornment
+        - Downloaded openVino
 
-    - Found out that openVino is only for inference (i.e. running, but not training)
-        - (https://www.youtube.com/watch?v=kY9nZbX1DWM)
-        - Hence useful for running the model given a certain file of weights, but not for training
-Ideas:
-    - Get a pre-trained model for showcasing purposes then start building upon it in phase 2
-        - Need to start exploring it and looking at its source code in phase 1 so I could get 
-            straight to work and enchancements in phase 2
+        - Found out that openVino is only for inference (i.e. running, but not training)
+            - (https://www.youtube.com/watch?v=kY9nZbX1DWM)
+            - Hence useful for running the model given a certain file of weights, but not for training
+    Ideas:
+        - Get a pre-trained model for showcasing purposes then start building upon it in phase 2
+            - Need to start exploring it and looking at its source code in phase 1 so I could get 
+                straight to work and enchancements in phase 2
+
+    Closest goals/ views:
+        - download pre-trained model and set-it up to work on my mac -> see how good is it
