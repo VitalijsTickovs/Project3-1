@@ -16,6 +16,15 @@
     - ![No CUDA needed 2?](logResources/2_CudaProblem2.png)
     - ![Getting Caffe to run only on a CPU](logResources/3_CaffeOnlyCPU.png)
 
+- Starting to follow the instructions to download the MobilenetSSD model (https://github.com/chuanqi305/MobileNet-SSD)
+    - I will need to request access to the weights
+    - Installed SSD repository 
+    - Stuck on installing Caffe
+        - Looks like I caqn try to install it with anaconda? I don't wanna use brew. 
+        - I am not sure whether it will cause any issues because it differs from standard installation, but I will just have to try.
+            - ![Caffe installable via anaconda?](logResources/4_CaffeAnaconda.png)
+            - According to digital assitant I might not be able to modify files as I want (e.g. enable only CPU) so it recommends downloading from source
+
 ## Ideas:
 - Get a pre-trained model for showcasing purposes then start building upon it in phase 2
     - Need to start exploring it and looking at its source code in phase 1 so I could get 
