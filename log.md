@@ -32,3 +32,29 @@
 
 ## Closest goals/ views:
 - download pre-trained model and set-it up to work on my mac -> see how good is it
+
+# 1 Octobre (2023):
+## History
+1. Tried to install Caffe via anaconda only to find out that there is no package avilable for osx system. Try linux? 
+2. Decided not to try linux version
+3. Trying to install via official instructions and homebrew
+    - let hdf5 be on anaconda python
+    - installed all required brew libraries except for szip (couldn't find it on brew, assume part of anacondas hdf5)
+    - installed command line tools xcode
+    - installed 2 additional libraries:
+        - command "--with-python" became obsolete now it is in python by default
+        - ![alternative to "--with-python"](logResources/5_withPython.png)
+        - No boost-python available only boost-python3
+    - do the checks using otool from https://gist.github.com/kylemcdonald/0698c7749e483cd43a0e 
+    - go to caffe makefile.config and modify it to use CPU and anaconda3 path
+4. Tried to "make all". Ran into errors with C++ version of protoc. Possibly because of conflicting anaconda and brew? (https://github.com/BVLC/caffe/issues/6527)
+5. Tried to ignore brew and go via anaconda:
+    - change the PATH and CPATH variables to anaconda base bin and include directories
+    - Also changed the protoc version headers to C++11 
+        - ![Previous head parameters](logResources/6_headOld.png)
+        - ![Current head parameters](logResources/6_headNew.png)
+    - had to instal glog 
+    - had to install opencv
+6. I next error occurs then I am
+7. To many conflicts and too slow via conda installation so going back to brew
+    
