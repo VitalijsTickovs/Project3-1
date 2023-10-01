@@ -57,4 +57,14 @@
     - had to install opencv
 6. I next error occurs then I am
 7. To many conflicts and too slow via conda installation so going back to brew
+
+## Useful sources:
+- Another caffe installation guide (https://gist.github.com/kylemcdonald/0698c7749e483cd43a0e)
+
+## Objectives:
+- Try to get back to brew and exclude conda
+    - change PATH and CPATH variables to brew bin and brew include?
+    - change back the flags to normal?
+    - install python-boost3?
+
     
