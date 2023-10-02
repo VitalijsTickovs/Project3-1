@@ -81,6 +81,21 @@
 4. Conclusions:
     - the repository is written in old c++ version
     - potetntially need to downgrade all the brew packages especially protobuf
+5. Was able to resolve error by removing the anaconda protoc and protobuf 
+    - anaconda was conflicting with brew when runnign "make all"
+    - ![Thanks to chinese guys and chatgpt "which -a protoc" command](logResources/5_withPython.png)
+6. Uninstalled opencv and protobuff in preparation for installing the downgraded versions
+7. Installed protobuf@3 via brew which is more suitable for the release of the caffe repository
+    - NOW I HAVE ONE ERROR LESS!!!
+8. Problem is that now I am missing opencv2 while current opencv is v4 and overrieds my protobuf@3 with newer protobuf version
+9. Tired to use opencv with protobuf and protobuf@3
+    - unlinked protobuf and linked protobuf@3 so no protoc errors
+    - still doesn't like opencv -> i.e. requests opencv2
+10. Tired to install opencv2 via brew by editing .rb file but failed because of sha1 being depreciated (https://docs.brew.sh/Checksum_Deprecation)
+    -  thanks to this guy for explanations ![Brew old package installation](logResources/8_brewOldPackages.png)
+
+
 
 ## Objectives:
-Reinstall and downgrade protobuf version???
+- Reinstall and downgrade protobuf version??? -> done, using protobuf@3 and it is working
+- manually try to add opencv@2?
