@@ -67,4 +67,20 @@
     - change back the flags to normal?
     - install python-boost3?
 
-    
+
+### 2 Octobre (2023)
+## History:
+1. Trying to comeback to brew
+    - bin is folder with all the binary executables allowing to execute certain commands and programs on computer
+    - brew install binaries to local bin direcotries on computer
+    - there are multiple bin directories on computer
+    - to see them in finder press: cmd + shift + .
+2. How to change $PATH variable:
+    - https://stackoverflow.com/questions/15872666/how-to-remove-entry-from-path-on-mac
+3. Change the CXXFLAGS in makefile to -std=c++14
+4. Conclusions:
+    - the repository is written in old c++ version
+    - potetntially need to downgrade all the brew packages especially protobuf
+
+## Objectives:
+Reinstall and downgrade protobuf version???
