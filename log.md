@@ -68,7 +68,7 @@
     - install python-boost3?
 
 
-### 2 Octobre (2023)
+# 2 Octobre (2023)
 ## History:
 1. Trying to comeback to brew
     - bin is folder with all the binary executables allowing to execute certain commands and programs on computer
@@ -99,3 +99,52 @@
 ## Objectives:
 - Reinstall and downgrade protobuf version??? -> done, using protobuf@3 and it is working
 - manually try to add opencv@2?
+
+# 3 Octobre (2023)
+1. Moved displicate opencv2 to include file of opencv version in brew
+    - didn't work, same error
+2. Manually unlinked opencv and linked manualyl downaloded opencv@2
+     - didn't work
+3. Coming back to 1.: I unlinked and relinked opencv and it know gives a different error which is further down the line (Wohoo!)
+4. Trying to deal with openblas not being found. Tried to add two flags to the compiler (temporary i.e. only for this session ofterminal).
+    - didn't work
+5. I will try to link without unlinking anything
+    - nope same error
+6. Tried making a symbolic link manually to the openblas because right now it is nott linked to usr/local because of Appleds Accelerate.framework (https://stackoverflow.com/questions/57610663/linking-brew-installed-openblas-to-usr-local)
+    - Didn't work 
+7. Tried to change the makefile.config based on (https://github.com/CMU-Perceptual-Computing-Lab/openpose/issues/1942)
+    - didn't work (not the same file strucutre)
+    - maybe I can readapt it if I copy openblas from cellar and put it somewhere else
+8. Tried writing in terminal: "export PATH="/usr/local/opt/openblas/include:$PATH"
+    - didn't work
+9. tried changing local bash_profile (https://stackoverflow.com/questions/30461201/how-do-i-edit-path-bash-profile-on-os-x)
+    - Never do pbpaste > ~/.bash_profile if it already has information!!!
+    - Accidentally overwrote my entire bashrc so I will need to reinstall the repository
+10. Recreated caffe repository:
+    - looks like "-std=c++11" were quiet important (otherwise doesn't compile)
+    - changed makefile.config to use blas path from mac (https://gist.github.com/rizky/5c0f7435ce7d3bcd3e236cca99042587 and https://stackoverflow.com/questions/58279278/what-is-the-include-path-for-cblas-h-on-mac-os-x)
+    - could have used opencv3 because there was an option makefile.config, but oh well (too late)
+    - Quiet big progress, but another fucking error!
+11. Looks like an opencv problem. Try to unlink opencv and use opencv@3?
+    - downloaded opencv@3
+    - unlinked opencv, linked opencv@3
+    - unlinked protobuf@21
+    - edited makefile.config to use opencv@3
+    - solved!!!
+12. Looks like I have again protobuf problem (specifically compatability)
+    - see https://github.com/onnx/onnx/issues/2678
+    - Looks like I need to downgrade even further if possible 
+13. Trying to install an additonal brew repository to look for more protobuf versions
+    - https://stackoverflow.com/questions/21775151/installing-google-protocol-buffers-on-mac
+    - too many problems, maybe try anaconda donwload?
+14. Figured out that when I killed my entire bash_profile I made it impossiblr for anaconda to run
+    - thanksfully I figured out that there is .bash_profile.pysave file which saved the previous version of bash_profile 
+    - source: https://stackoverflow.com/questions/38021598/what-exactly-is-bash-profile-pysave
+15. Tried pip install of downgraded protobuf
+    - failed to find a way to connect it 
+16. Tried donwloading files from github and just replacing them manually (i.e. insert files from v 3.6.0 instead of the contained files of v 3.20.3)
+    - downloaded two file types:
+        - osx -> need to get the bin file of protoc 
+        - src -> contains the files in the "include" directory 
+        - result: gives errors of missing files instead 
+17. STOPPING THIS NIGHTMARE
