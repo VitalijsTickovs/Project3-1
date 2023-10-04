@@ -1,0 +1,11 @@
+Description:
+    File for saving links so they do not clutter my browser when I terminate the work temporarily
+
+Workspace links:
+
+https://dataphoenix.info/a-guide-to-the-yolo-family-of-computer-vision-models/
+
+https://github.com/ultralytics/ultralytics
+
+https://docs.ultralytics.com/modes/track/#why-choose-ultralytics-yolo-for-object-tracking
+

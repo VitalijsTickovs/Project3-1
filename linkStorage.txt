@@ -1,4 +1,0 @@
-Description:
-    File for saving links so they do not clutter my browser when I terminate the work temporarily
-
-Workspace links:
