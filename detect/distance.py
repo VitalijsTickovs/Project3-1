@@ -53,7 +53,7 @@ def computeMidpoints(path, visualise=False):
         counter+=1
     if (visualise): print("midPoints filled: ", midPoints)
     checkMidPoints(visualise, midPoints, path)
-    return midPoints
+    return results, midPoints
 
 
 def checkMidPoints(bool, midpoints, path):
@@ -69,7 +69,7 @@ def checkMidPoints(bool, midpoints, path):
 def computeDistances(path, visualise=False):
     """Compute distances between midpoints of the detected objects"""
     # get the midpoints
-    midPoints = computeMidpoints(path)
+    results, midPoints = computeMidpoints(path)
 
     # create array to store them
     distances = [ [0.0]*len(midPoints) for i in range(len(midPoints))]
@@ -88,7 +88,7 @@ def computeDistances(path, visualise=False):
         idxA+=1
 
     if (visualise): print("distances filled:", distances)
-    return distances
+    return results, distances
 
 def getNameLookup(distances, visualise=False):
     """generate arrays so that we can look up a  name of the object e.g. distance value in cell (1,3) is a distance between 
@@ -110,7 +110,26 @@ def getNameLookup(distances, visualise=False):
     # return lookup arrays
     return namesRow, namesCol
 
+def getTypeLookup(results, namesRow, visualise=False):
+    """Generate array for looking up entity types"""
+    # create empty array for type lookup [[class_id, class_name], [class_id, class_name], ...]
+    typeNames = [[0]*2 for i in range(len(namesRow))]
+    typeClsIdx = 
+
+    # fill the array with class names and class ids corresponding to namesRow index (which is the same as namesCol)
+    counter = 0
+    for idxCls in results[0].boxes.cls:
+        className = results[0].names[int(idxCls)]
+        types[counter][0] = int(idxCls)
+        types[counter][1] = className
+
+        counter+=1
+
+    if (visualise): print(types)
+    return types
+
 
 ## Executable code:
-distances = computeDistances("detect/bus.jpg")
-namesRow, namesCol = getNameLookup(distances, True)
+results, distances = computeDistances("detect/bus.jpg")
+namesRow, namesCol = getNameLookup(distances)
+types = getTypeLookup(results, namesRow)
