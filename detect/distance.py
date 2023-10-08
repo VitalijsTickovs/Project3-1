@@ -77,7 +77,7 @@ def computeDistances(path, visualise=False):
         print("distances:", distances)
         print()
     
-    # iterate through detecged objects and compute distances
+    # iterate through detected objects and compute distances
     idxA = 0
     for pointA in midPoints:
         idxB = 0
@@ -90,8 +90,27 @@ def computeDistances(path, visualise=False):
     if (visualise): print("distances filled:", distances)
     return distances
 
+def getNameLookup(distances, visualise=False):
+    """generate arrays so that we can look up a  name of the object e.g. distance value in cell (1,3) is a distance between 
+    nameRow[1] and nameCol[3]"""
+    # init. empty lookup arrays
+    namesRow = ["..."]*len(distances)
+    namesCol = ["..."]*len(distances)
 
+    # assign template names
+    for i in range(len(distances)):
+        namesRow[i] = "entity"+str(i)
+        namesCol[i] = "entity"+str(i)
+
+    if(visualise):
+        print("namesRow", namesRow)
+        print()
+        print("namesCol", namesCol)
+
+    # return lookup arrays
+    return namesRow, namesCol
 
 
 ## Executable code:
-computeDistances("detect/bus.jpg")
+distances = computeDistances("detect/bus.jpg")
+namesRow, namesCol = getNameLookup(distances, True)
