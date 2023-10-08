@@ -32,3 +32,8 @@
     - successfuly creation of boxes when using xyxy format
 7. Was also able to create midpoints and visualise them 
 8. Now I have the midpoints of all the objects, the question is how to I convert this to an array of distances. For now lets ignore the specific types of objects and just do template names (i.e. add own types later). 
+    - created verything needed 
+    - created distance arrays
+    - object lookup arrays
+    - type lookup arrays
+9. Next will need to merge all the methods into one
