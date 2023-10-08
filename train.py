@@ -1,4 +1,7 @@
+# import the necessary
 from ultralytics import YOLO
+
+## Essentially this file is used for training a model. Parameters canbe specified below
 
 # Load a model
 model = YOLO("yolov8n.yaml")  # build a new model from scratch

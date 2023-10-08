@@ -9,3 +9,5 @@ https://github.com/ultralytics/ultralytics
 
 https://docs.ultralytics.com/modes/track/#why-choose-ultralytics-yolo-for-object-tracking
 
+ByteTrack algorithm and YOLOX paper: 
+https://arshren.medium.com/bytetrack-a-simple-yet-effective-multi-object-tracking-technique-86f1f3632a85 

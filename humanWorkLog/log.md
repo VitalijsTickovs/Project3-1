@@ -8,3 +8,18 @@
 
 ### Close objectives
 1. Look at tracking ability and whether it is possible to extract the data in real time
+
+
+## 8 Octobre 2023
+1. Created code for tracking the objects both from video and in real-time 
+2. Looks like tracking with .mov file types is very slow (because able to track in real-time much faster when source=0)
+3. Need to explore further what are different optional tracking algorithms such as "bytetrack". Looks like it comes from other YOLO models such as YOLOX. 
+4. Started thinking about how to store the distances between the objects:
+    - something like a graph, but needs to be computatinally efficient to iterate through
+    - maybe start  with simple arrays instead of creating a whole graph structure
+5. IDEA: Adressing the limitation of camera not being able to see everything (limited view):
+    - memorising and using inference
+        - example:
+            - if A to B is 5 cm
+            - and B to C is 4 cm
+            - then A to C is 9 cm
