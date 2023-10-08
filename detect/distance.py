@@ -66,15 +66,16 @@ def checkMidPoints(bool, midpoints, path):
         cv.waitKey(0) 
         cv.destroyAllWindows()
 
-def computeDistances(path):
+def computeDistances(path, visualise=False):
     """Compute distances between midpoints of the detected objects"""
     # get the midpoints
     midPoints = computeMidpoints(path)
 
     # create array to store them
     distances = [ [0.0]*len(midPoints) for i in range(len(midPoints))]
-    print("distances:", distances)
-    print()
+    if (visualise): 
+        print("distances:", distances)
+        print()
     
     # iterate through detecged objects and compute distances
     idxA = 0
@@ -86,7 +87,7 @@ def computeDistances(path):
             idxB+=1
         idxA+=1
 
-    print("distances filled:", distances)
+    if (visualise): print("distances filled:", distances)
     return distances
 
 
