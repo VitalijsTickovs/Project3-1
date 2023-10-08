@@ -4,6 +4,7 @@ from ultralytics import YOLO
 
 
 def predictAndVisualise(arr):
+    """Method for visualising  bounding boxes"""
     # get the frames
     idx = 0
     frame = cv.imread(arr[idx])
@@ -29,6 +30,7 @@ def predictAndVisualise(arr):
     return frame
 
 def predictAndCenter(arr):
+    """Method for visualising bounding boxes and center points"""
     # get the frames
     idx = 0
     frame = cv.imread(arr[idx])
