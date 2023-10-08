@@ -1,5 +1,6 @@
 import cv2 as cv
 from ultralytics import YOLO
+import math
 
 def predictAndCenter(path):
     """Method for calculating distances between midpoints"""
@@ -42,7 +43,7 @@ def computeMidpoints(path, visualise=False):
 
     # compute midpoints and store them
     midPoints = [ [0]*2 for i in range(len(xyxys))]
-    print("midPoints: ", midPoints)
+    if (visualise): print("midPoints: ", midPoints)
     counter = 0
     for xyxy in xyxys:
         midX = int((xyxy[0]+xyxy[2])/2)
@@ -50,13 +51,13 @@ def computeMidpoints(path, visualise=False):
         midPoints[counter][0] = midX
         midPoints[counter][1] = midY
         counter+=1
-    print("midPoints filled: ", midPoints)
+    if (visualise): print("midPoints filled: ", midPoints)
     checkMidPoints(visualise, midPoints, path)
     return midPoints
 
 
 def checkMidPoints(bool, midpoints, path):
-    """Check where  the midpoints are showing up to see if they were calculated correctly"""
+    """Check where the midpoints are showing up to see if they were calculated correctly"""
     if bool:
         frame = cv.imread(path)
         for arr in midpoints:
@@ -65,6 +66,31 @@ def checkMidPoints(bool, midpoints, path):
         cv.waitKey(0) 
         cv.destroyAllWindows()
 
+def computeDistances(path):
+    """Compute distances between midpoints of the detected objects"""
+    # get the midpoints
+    midPoints = computeMidpoints(path)
+
+    # create array to store them
+    distances = [ [0.0]*len(midPoints) for i in range(len(midPoints))]
+    print("distances:", distances)
+    print()
+    
+    # iterate through detecged objects and compute distances
+    idxA = 0
+    for pointA in midPoints:
+        idxB = 0
+        for pointB in midPoints:
+            distance = math.dist(pointA, pointB)   
+            distances[idxA][idxB] = distance
+            idxB+=1
+        idxA+=1
+
+    print("distances filled:", distances)
+    return distances
+
+
+
 
 ## Executable code:
-computeMidpoints("detect/bus.jpg")
+computeDistances("detect/bus.jpg")
