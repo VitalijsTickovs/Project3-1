@@ -113,23 +113,26 @@ def getNameLookup(distances, visualise=False):
 def getTypeLookup(results, namesRow, visualise=False):
     """Generate array for looking up entity types"""
     # create empty array for type lookup [[class_id, class_name], [class_id, class_name], ...]
-    typeNames = [[0]*2 for i in range(len(namesRow))]
-    typeClsIdx = 
+    typeNames = dict()
+    typeClsIdx = dict()
 
     # fill the array with class names and class ids corresponding to namesRow index (which is the same as namesCol)
     counter = 0
     for idxCls in results[0].boxes.cls:
         className = results[0].names[int(idxCls)]
-        types[counter][0] = int(idxCls)
-        types[counter][1] = className
+        entiName = namesRow[counter]
+        typeNames[entiName] = className
+        typeClsIdx[entiName] = int(idxCls)
 
         counter+=1
 
-    if (visualise): print(types)
-    return types
+    if (visualise): 
+        print(typeNames)
+        print(typeClsIdx)
+    return typeClsIdx, typeNames
 
 
 ## Executable code:
 results, distances = computeDistances("detect/bus.jpg")
 namesRow, namesCol = getNameLookup(distances)
-types = getTypeLookup(results, namesRow)
+typeClsIdx, typeNames = getTypeLookup(results, namesRow)
