@@ -27,4 +27,6 @@
         - 2 options come to mind:
             - use the scale data (e.g. how small is the object in comparison to its known size -> use pre-exisiting knowldge) 
             - use depth camera
-    
+6. Trying to understand xyxy  and xywh formates of result object from YOLO
+    - do not understna dthe xywh format (unable to create correct bounding boxes)
+    - successfuly creation of boxes when using xyxy format
