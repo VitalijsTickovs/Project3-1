@@ -15,6 +15,7 @@ def inferImage(path):
 
 
 def streamProb():
+    """Calculate probabilties from stream"""
     # Load a model
     model = YOLO('yolov8n.pt')  # pretrained YOLOv8n model
 
