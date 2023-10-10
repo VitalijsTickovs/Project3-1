@@ -13,6 +13,26 @@ def inferImage(path):
     results = model(path)  # return a list of results
     return results
 
+
+def streamProb():
+    # Load a model
+    model = YOLO('yolov8n.pt')  # pretrained YOLOv8n model
+
+    vidcap = cv.VideoCapture(0)
+
+    while True:
+        ret, frame = vidcap.read()
+    
+        if not ret: 
+            break
+
+        results = model.track(frame, persist=True)
+        typeProbMatch = getProbabilties(results)
+        print(typeProbMatch)
+    else:
+        print("cannot open camera")
+
+
 # TODO: current problem with the method and approach in general is that if there are multiple 
 #   instances of thesame object lying around 
 #   Current work around is to just give out the highest probability encounterred
@@ -36,6 +56,10 @@ def getProbabilties(results):
     return typeProbMatch
 
 ## Executable section
-results = inferImage("detect/bus.jpg")
-typeProbMatch = getProbabilties(results)
-print(typeProbMatch)
+# Image probabilities
+#results = inferImage("detect/bus.jpg")
+#typeProbMatch = getProbabilties(results)
+#print(typeProbMatch)
+
+# Stream probabilities
+streamProb()
