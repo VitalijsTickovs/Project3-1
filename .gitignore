@@ -1,3 +1,4 @@
 # Kirill's gitignore part (don't delete otherwise I can't move between branches)
 saveForLater
 track/fish.mov
+__pycache__\
