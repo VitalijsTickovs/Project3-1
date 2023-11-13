@@ -2,6 +2,8 @@
 
 import numpy as np
 
+# TODO : Create a vectorizing function for the SGD Class to vectorize data ?
+
 class SGD:
 	def __init__(self, lr=0.01, max_iter=1000, batch_size=32, tol=1e-3):
 		# learning rate of the SGD Optimizer
@@ -9,6 +11,7 @@ class SGD:
 		# maximum number of iterations for SGD Optimizer
 		self.max_iteration = max_iter 
 		# mini-batch size of the data 
+        # The SGD is not strict since batch_sizes aren't one --> this reduces noise and allows for faster computations.
 		self.batch_size = batch_size 
 		# tolerance for convergence for the theta 
 		self.tolerence_convergence = tol 
@@ -27,7 +30,7 @@ class SGD:
 			X = X[indices]
 			y = y[indices]
 			
-			# Iterate over mini-batches
+			# Iterate over mini-batches (We are taking mini-batches of size 32)
 			for i in range(0, n, self.batch_size):
 				X_batch = X[i:i+self.batch_size]
 				y_batch = y[i:i+self.batch_size]
