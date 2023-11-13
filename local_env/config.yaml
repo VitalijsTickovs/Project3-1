@@ -1,8 +1,0 @@
-
-path: D:\School\train-yolov8-custom-dataset-step-by-step-guide\dataset  # dataset root dir (absolute Path)
-train: images  # train images (relative to 'path')
-val: images  # val images (relative to 'path')
-
-# Classes
-names:
-  0: yello

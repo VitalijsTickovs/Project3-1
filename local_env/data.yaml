@@ -1,0 +1,9 @@
+path: C:/GitHub/Project3-1/local_env/dataset  # dataset root dir (absolute Path)
+train: train/images
+val: valid/images
+test: test/images
+
+names:
+  0: crate
+  1: feeder
+  2: cup
