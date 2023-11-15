@@ -10,15 +10,15 @@ def load_data(path):
 
 
 def load_ucla_data(path):
-    train_1 = load_data(path + 'new_xyz_transform_skel_1.json')
-    train_2 = load_data(path + 'new_xyz_transform_skel_2.json')
+    train_1 = load_data(path + '/new_xyz_transform_skel_1.json') # error correction : added /
+    train_2 = load_data(path + '/new_xyz_transform_skel_2.json') # error correction : added /
     train_data = {**train_1, **train_2}
     # train data
     for key in train_data.keys():
         train_data[key] = np.asarray(train_data[key])
 
     # test data
-    test_data = load_data(path + 'new_xyz_transform_skel_3.json')
+    test_data = load_data(path + '/new_xyz_transform_skel_3.json') # error correction : added /
     for key in test_data.keys():
         test_data[key] = np.asarray(test_data[key])
     # delete bad data
@@ -110,4 +110,14 @@ def preprocess_ucla(path):
     return dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len
 
 
-dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len = preprocess_ucla("ucla_data")
+# dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len = preprocess_ucla("BaselineModel/Skeleton_Dataset/ucla_data")
+# print("dsamp_train: ", dsamp_train) # Squeleton train data vectorized under dictionary of 2D arrays
+# print("dsamp_test: ", dsamp_test) # Squeleton test data vectorized under dictionary of 2D arrays
+
+# print("tr_fea_xyz: ", tr_fea_xyz) # training feature vectors, len(tr_fea_xyz) = 1019 =  size of training data
+# print("tr_label: ", tr_label) # training labels / target values, len(tr_label) = 1019 =  size of training data
+# print("tr_seq_len: ", tr_seq_len) # sequence length of each individual feature xyz training vector, total vectors = 1019 = len(tr_seq_len) = len(tr_fea_xyz) = len(tr_label)
+
+# print("te_fea_xyz: ", te_fea_xyz) # test feature vectors, len(te_fea_xyz) = 463 =  size of test data
+# print("te_label: ", te_label) # test labels / target values, len(te_label) = 463 =  size of test data
+# print("te_seq_len: ", te_seq_len) # sequence length of each individual feature xyz test vector, total vectors = 463 = len(te_seq_len) = len(te_fea_xyz) = len(te_label)

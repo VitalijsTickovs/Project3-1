@@ -20,9 +20,11 @@ class SGD:
 		
 	def fit(self, X, y):
 		# store dimension of input vector 
-		n, d = X.shape
+		n, d1, d2 = X.shape
+		# print("n, d1, d2 = ", n, d1, d2)
+		
 		# Intialize random Theta for every feature 
-		self.theta = np.random.randn(d)
+		self.theta = np.random.randn(d1*d2)
 		
 		for i in range(self.max_iteration):
 			# Shuffle the data
@@ -59,20 +61,23 @@ class SGD:
 		y_pred = np.dot(X, self.theta)
 		return y_pred
 
-### Testing the SGD class ###
+# ### Testing the SGD class ###
 
-# Create random dataset with 100 rows and 5 columns
-X = np.random.randn(100, 5)
+# # Create random dataset with 100 rows and 5 columns
+# X = np.random.randn(100, 5) # Change this
 
-# create corresponding target value by adding random noise in the dataset
-y = np.dot(X, np.array([1, 2, 3, 4, 5]))\
-	+ np.random.randn(100) * 0.1
+# # create corresponding target value by adding random noise in the dataset
+# y = np.dot(X, np.array([1, 2, 3, 4, 5])) + np.random.randn(100) * 0.1 # change first part
+# # np array needs to have the same number of columns as X
 
-# Create an instance of the SGD class
-model = SGD(lr=0.01, max_iter=1000,
-			batch_size=32, tol=1e-3)
-model.fit(X, y)
+# # Create an instance of the SGD class
+# model = SGD(lr=0.01, max_iter=1000, #change param if needed
+# 			batch_size=32, tol=1e-3)
+# model.fit(X, y)
 
-# Predict using predict method from model
-y_pred = model.predict(X) # Matrix of predicted values
-# print(y_pred) 
+# # Predict using predict method from model
+# y_pred = model.predict(X) # Matrix of predicted values
+
+
+
+
