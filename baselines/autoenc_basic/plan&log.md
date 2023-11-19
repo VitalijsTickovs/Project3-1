@@ -5,13 +5,13 @@
             1. left hand coordinates
             2. right hand coordinates
             3. center of object frame coordinates
-        - doesn't take into accoutn object type
+        - doesn't take into account object type
         - can't extend the model weight matrices to add a new object
         - output:
             - predicted movement sequence 
     - simple assumptions:
-        1. single object
-        2. single human 
+        1. single object (extension to multi needed)
+        2. single human (extension to multi needed)
 
 ### Log
 ##### 19 Nov 2023
