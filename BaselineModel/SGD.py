@@ -1,82 +1,89 @@
 # Template code retrieved from : https://www.geeksforgeeks.org/ml-stochastic-gradient-descent-sgd/
-
+# Then modified to fit our project
+from Skeleton_Dataset.load_skeleton_tracking import *
 import numpy as np
 
-# TODO : Create a vectorizing function for the SGD Class to vectorize data ?
-
 class SGD:
-	def __init__(self, lr=0.01, max_iter=1000, batch_size=32, tol=1e-3):
-		# learning rate of the SGD Optimizer
-		self.learning_rate = lr 
-		# maximum number of iterations for SGD Optimizer
-		self.max_iteration = max_iter 
-		# mini-batch size of the data 
-        # The SGD is not strict since batch_sizes aren't one --> this reduces noise and allows for faster computations.
-		self.batch_size = batch_size 
-		# tolerance for convergence for the theta 
-		self.tolerence_convergence = tol 
-		# Initialize model parameters to None
-		self.theta = None
-		
-	def fit(self, X, y):
-		# store dimension of input vector 
-		n, d1, d2 = X.shape
-		# print("n, d1, d2 = ", n, d1, d2)
-		
-		# Intialize random Theta for every feature 
-		self.theta = np.random.randn(d1*d2)
-		
-		for i in range(self.max_iteration):
-			# Shuffle the data
-			indices = np.random.permutation(n)
-			X = X[indices]
-			y = y[indices]
-			
-			# Iterate over mini-batches (We are taking mini-batches of size 32)
-			for i in range(0, n, self.batch_size):
-				X_batch = X[i:i+self.batch_size]
-				y_batch = y[i:i+self.batch_size]
-				grad = self.gradient(X_batch, y_batch)
-				
-				# gradient descent update
-				self.theta -= self.learning_rate * grad
-				
-			# Check for convergence
-			if np.linalg.norm(grad) < self.tolerence_convergence:
-				break
-	
-	# define a gradient function for calculating gradient of the data 
-	def gradient(self, X, y):
-		n = len(y) 
-		# predict target value by taking dot product of dependent and theta value 
-		y_pred = np.dot(X, self.theta)
-		
-		# calculate error between predict and actual value 
-		error = y_pred - y
-		grad = np.dot(X.T, error) / n
-		return grad
-	
-	def predict(self, X):
-		# predict y value using calculated theta value 
-		y_pred = np.dot(X, self.theta)
-		return y_pred
+    def __init__(self, lr=0.01, max_iter=1000, batch_size=32, tol=1e-3):
+        self.learning_rate = lr
+        self.max_iteration = max_iter
+        self.batch_size = batch_size
+        self.tolerence_convergence = tol
+        self.theta = None
 
-# ### Testing the SGD class ###
+    def fit(self, X, y):
+        n, _, _ = X.shape
+        X_flat = X.reshape(n, -1)  # Flatten the last dimensions
+        _, d = X_flat.shape
+        y = y.reshape(-1, 1) # Reshape y into a column vector 
+        self.theta = np.random.randn(d)
+        self.theta = self.theta.reshape(-1, 1)  # Reshape self.theta to be the same shape as y
 
-# # Create random dataset with 100 rows and 5 columns
-# X = np.random.randn(100, 5) # Change this
+        for _ in range(self.max_iteration):
+            indices = np.random.permutation(n)
+            X_flat = X_flat[indices]
+            y = y[indices]
 
-# # create corresponding target value by adding random noise in the dataset
-# y = np.dot(X, np.array([1, 2, 3, 4, 5])) + np.random.randn(100) * 0.1 # change first part
-# # np array needs to have the same number of columns as X
+            for i in range(0, n, self.batch_size):
+                X_batch = X_flat[i:i+self.batch_size]
+                y_batch = y[i:i+self.batch_size]
+                grad = self.gradient(X_batch, y_batch)
+                self.theta -= self.learning_rate * grad  # Update theta
 
-# # Create an instance of the SGD class
-# model = SGD(lr=0.01, max_iter=1000, #change param if needed
-# 			batch_size=32, tol=1e-3)
-# model.fit(X, y)
+            if np.linalg.norm(self.learning_rate * grad) < self.tolerence_convergence:
+                break
 
-# # Predict using predict method from model
-# y_pred = model.predict(X) # Matrix of predicted values
+    def gradient(self, X, y): # gradient is used in fit, no need to flatten X
+        n = len(y)
+        y_pred = np.dot(X, self.theta)
+        error = y_pred - y
+        grad = np.dot(X.T, error) / n
+        return grad
+
+    def predict(self, X):
+        X_flat = X.reshape(len(X), -1) # Flatten the last dimensions
+        y_pred = np.dot(X_flat, self.theta)
+        return y_pred
+    
+    def load_weights(self, filename="SGD_model_weights.npy"):
+        self.theta = np.load(filename)
+        
+    def save_weights(self, filename="SGD_model_weights.npy"):
+        np.save(filename, self.theta)
+        
+## SGD MODEL INITIALIZATION ##
+def initialize():
+    # Load & Preprocess data
+    dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len = preprocess_ucla("Project3-1/BaselineModel/Skeleton_Dataset/ucla_data")
+    # print ("no error in loading + preprocessing data")
+
+    # Make sure len(tr_fea_xyz) = len(tr_label) = 1019 = size of training data
+
+    # Create random dataset with 100 rows and 5 columns
+    X = np.array(tr_fea_xyz)
+    # print("no error in X declaration") 
+
+    # create corresponding target value by adding random noise in the dataset
+    # random noise avoids getting stuck in local minima
+    y = np.dot(X.T, np.array(tr_label)) + np.random.randn(60, 50, 10) * 0.1
+    # print("no error in y declaration")
+
+    # Create an instance of the SGD class
+    model = SGD(lr=0.01, max_iter=1000, batch_size=32, tol=1e-3) # change param if needed
+    # print("no error in model declaration")
+
+    model.fit(X, y) 
+
+    # Predict using predict method from model
+    y_pred = model.predict(X) # Matrix of predicted values
+    print(y_pred) 
+
+    # Save model parameters & weights
+    model.save_weights("Project3-1/BaselineModel/SGD_model_weights.npy")
+    print("model weights saved")
+
+# initialize() # Only run this once in the file, weights will be saved in "SGD_model_weights.npy"
+
 
 
 

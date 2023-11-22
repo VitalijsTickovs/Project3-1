@@ -2,12 +2,10 @@ import math
 import json
 import numpy as np
 
-
 def load_data(path):
     with open(path) as f:
         data = json.load(f)
     return data
-
 
 def load_ucla_data(path):
     train_1 = load_data(path + '/new_xyz_transform_skel_1.json') # error correction : added /
@@ -110,9 +108,9 @@ def preprocess_ucla(path):
     return dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len
 
 
-# dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len = preprocess_ucla("BaselineModel/Skeleton_Dataset/ucla_data")
-# print("dsamp_train: ", dsamp_train) # Squeleton train data vectorized under dictionary of 2D arrays
-# print("dsamp_test: ", dsamp_test) # Squeleton test data vectorized under dictionary of 2D arrays
+# dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len = preprocess_ucla("Project3-1/BaselineModel/Skeleton_Dataset/ucla_data")
+# print("dsamp_train: ", dsamp_train) # Squeleton sample train data vectorized under dictionary of 2D arrays
+# print("dsamp_test: ", dsamp_test) # Squeleton sample test data vectorized under dictionary of 2D arrays
 
 # print("tr_fea_xyz: ", tr_fea_xyz) # training feature vectors, len(tr_fea_xyz) = 1019 =  size of training data
 # print("tr_label: ", tr_label) # training labels / target values, len(tr_label) = 1019 =  size of training data

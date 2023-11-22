@@ -11,3 +11,9 @@ def fetch_data():
 def predict():
     # continuous prediction function
     pass
+
+## MAIN PROGRAM ##
+# Load the initialized model
+model = SGD.SGD()
+model.load_weights("Project3-1/BaselineModel/SGD_model_weights.npy")
+
