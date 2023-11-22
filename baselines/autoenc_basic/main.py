@@ -14,6 +14,7 @@ class ED_Network(nn.Module): # inherit from nn.Module
         self.flatten = nn.Flatten() # flatten variable of self
         self.linear_relu_stack = nn.Sequential(
             nn.Linear(4*15, 50), # 4 features * 15 different time points
+                                 #   features: left arm, right arm, head, spine point (ignoring the object coordinates for now)
             nn.ReLU(), # keep ReLU for now (lower computation) althoguh tempted to add LeakyReLU (dying neuron problem resolved)
             nn.Linear(50, 40), # encoder_1 -> encoder_2
             nn.ReLU(),
@@ -28,11 +29,12 @@ class ED_Network(nn.Module): # inherit from nn.Module
 
     def forward(self, x):
         x = self.flatten(x)
-        logits = self.linear_relu_stack(x)
-        return logits
+        rawOut = self.linear_relu_stack(x)
+        return rawOut
 
 
 ## MAIN
+full_debug = True
 
 device = (
     "cuda"
@@ -41,6 +43,15 @@ device = (
     if torch.backends.mps.is_available()
     else "cpu"
 )
-print(f"Using {device} device")
+model = ED_Network().to(device)
 
-model = ED_Network()
+if (full_debug):
+    print(f"Using {device} device")
+    print()
+
+    print(model)
+    print()
+
+X = torch.rand(1, 4, 15, device=device) # tensor with random numbers
+rawOut = model(X)
+print(rawOut)
