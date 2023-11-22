@@ -1,6 +1,12 @@
-import torch
-from torch.utils.data import Dataset
-import os
 import pandas as pd
-from torchvision.io import read_image
 
+### METHODS:
+
+
+
+### MAIN:
+
+contents = pd.read_json("Data/SkeletonData/testFile.json")
+print(type(contents))
+print()
+print(contents)
