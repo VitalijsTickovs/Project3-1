@@ -42,3 +42,8 @@ Progress:
                 - don't like 2.  
                 - option 1. reminds me of online learning
         - can leave "none" as test set (although questionable because high quality data)
+
+##### 23 Nov 2023
+- Created data preprocessing method in visual.ipynb
+- Next need to determine how big or small I should make the time window (e.g. currently 0.5 seconds)
+    - likely links back to the idea of extracting data points and skipping over others (see GoodNotes education folder)
