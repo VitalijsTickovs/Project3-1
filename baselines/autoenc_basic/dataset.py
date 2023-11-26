@@ -161,8 +161,9 @@ def getdata():
             print()
 
     # check if same dimensions everywhere + convert to numpy
-    Xdata = np.array(X)
-    YData = np.array(Y)
+    Xdata = np.array(X).astype(np.float32) # python has only floats of different length (which are 
+                                            # floats and doubles essentially speaking)
+    YData = np.array(Y).astype(np.float32)
     return Xdata, YData
 
 
