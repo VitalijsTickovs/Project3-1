@@ -31,6 +31,9 @@ class ED_Network(nn.Module): # inherit from nn.Module
         rawOut = self.linear_relu_stack(x)
         return rawOut
 
+    def expFlat(self, data):
+        return self.flatten(data)
+
 
 # Parameters:
 #   features - 2d array input motion [X moves][15 time pts][4 keypoints] e.g. { {{a1,b1,c1,d1}, {a2,b2,c2,d2}...},  ...}

@@ -1,7 +1,6 @@
 # Packages:
 import torch
 from torch import nn
-from torch.utils.data import DataLoader
 
 # Files:
 from model import ED_Network
