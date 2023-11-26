@@ -31,6 +31,15 @@ def exFrwrdPrpData():
     rawOut = model(Xt)
     print(rawOut)
 
+def exTestLoop():
+    # example forward propagation of single instance
+    X, Y = getdata() # get data based on json files in Data folder
+    Xt = torch.from_numpy(X) # convert to tensor 
+                                # only works on single instance hence X[0]
+    Yt = torch.from_numpy(Y)
+
+    test_loop(Xt, Yt, model, nn.L1Loss())
+
 
 # MAIN
 if __name__ == "__main__":
@@ -60,6 +69,7 @@ if __name__ == "__main__":
                                 # only works on single instance hence X[0]
     Yt = torch.from_numpy(Y)
 
-    #test_loop(Xt, Yt, model, nn.MSELoss())
-    test_loop(Xt, Yt, model, nn.L1Loss())
+    lr = 0.05
+    optimizer = torch.optim.SGD(model.parameters(), lr)
+    train_loop(Xt, Yt, model, nn.L1Loss(), optimizer)
     
