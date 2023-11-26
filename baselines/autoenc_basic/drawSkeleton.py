@@ -63,8 +63,8 @@ def skeletonPlot(skltnSq, step=1.0):
     ax = fig.add_subplot(projection="3d")
 
     # set color cycle for different plots
-    ptsNum = (skltnSq[0].shape)[0] - 3
-    boneNum = 0 # preset (can't be computed)
+    ptsNum = (skltnSq[0].shape)[0] - 4
+    boneNum = 3 # preset (can't be computed)
     clrCycleLst = crtCycleArr(len(skltnSq), rgb, clrStp, step, ptsNum, boneNum) #TODO: quadiple same color to prevent lines and points of different color
     ax.set_prop_cycle(cycler('color', clrCycleLst))
 
