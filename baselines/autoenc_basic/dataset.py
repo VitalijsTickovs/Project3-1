@@ -189,13 +189,13 @@ def getdata():
             print(len(Y[0][0][0])) # this should be 3
             print()
 
-    # Extract relevant key points of the skeleton
-    X, Y = filterKyPts(X, Y)
-
     # check if same dimensions everywhere + convert to numpy
     Xdata = np.array(X).astype(np.float32) # python has only floats of different length (which are 
                                             # floats and doubles essentially speaking)
-    YData = np.array(Y).astype(np.float32)
+    Ydata = np.array(Y).astype(np.float32)
+
+    # Extract relevant key points of the skeleton
+    Xdata, Ydata = filterKyPts(Xdata, Ydata)
 
     
     return Xdata, YData
