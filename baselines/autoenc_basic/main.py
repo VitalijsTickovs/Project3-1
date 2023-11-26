@@ -30,5 +30,8 @@ if (full_debug):
 #X = torch.rand(1, 4, 15, device=device) # tensor with random numbers
 X, Y = getdata() # get data based on json files in Data folder
 
-rawOut = model(X)
+Xt = torch.from_numpy(X)
+Yt = torch.from_numpy(Y)
+
+rawOut = model(Xt)
 print(rawOut)
