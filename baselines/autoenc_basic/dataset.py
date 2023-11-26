@@ -9,7 +9,6 @@ from datetime import datetime, timedelta
 ##   - Y/ outputs
 
 # METHODS:
-
 # Method to breakdown data into equal time intervals (default: 0.5s) 
 # Inputs:
 #   tm_wdw - time interval size
@@ -58,9 +57,9 @@ def selectTimePoints(slct_intrv, tm_pts_num=15):
     key_points = tmp_arr[slct_idxs,:] # array of skeletons in a correct order # (row, element/column) 
     return key_points
 
-# Iterate through 0.5 sec of skeleton measurments. Based on wdw_len which determines how much data we 
-# are using and how far we want to predict in time (default wdw_len=4: use 1 second of input data to 
-# predict 1 second forward) select 15 time points for X and for Y creating a single instance in each. 
+# Method that iterates through 0.5 sec of skeleton measurments. Based on wdw_len which determines how much
+# data we are using and how far we want to predict in time (default wdw_len=4: use 1 second of input data 
+# to predict 1 second forward) select 15 time points for X and for Y creating a single instance in each. 
 # Input:
 #   wdw_len:
 #       4 slots 0.5 seconds each, first half of slots is input, second half of slots is output
@@ -146,17 +145,18 @@ for name in trainNames:
     # check if dimensions are correct
     if (True): 
         print(len(intervals)-3)
-        print(len(X)) # this should be equal to value on the line above
+        print(len(X)) # this should be equal to value on the line above OR add up (if X non empty)
         print(len(X[0])) # this should be 15
         print(len(X[0][0])) # this should be 34
         print(len(X[0][0][0])) # this should be 3
         print()
 
         print(len(intervals)-3)
-        print(len(Y)) # this should be equal to value on the line above
+        print(len(Y)) # this should be equal to value on the line above OR add up (if Y non empty)
         print(len(Y[0])) # this should be 15
         print(len(Y[0][0])) # this should be 34
         print(len(Y[0][0][0])) # this should be 3
+        print()
 
 # check if same dimensions everywhere + convert to numpy
 Xdata = np.array(X)
