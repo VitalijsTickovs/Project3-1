@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from cycler import cycler
 
 
 # MEthod for plotting two points and a line between them
@@ -14,7 +15,7 @@ def ex3DPlot(): # from https://www.tutorialspoint.com/connecting-two-points-on-a
     ax.plot(x, y, z, color='black') # used to create a line between two points
     plt.show()
 
-def skeletonPlot(skltnSq):
+def singleSkeletonPlot(skltnSq):
     # extract coordinates
     keyPts = skltnSq[0]
     x = keyPts[:,0] # 2,7,14,26 => (2,7),(2,14),(2,26)
@@ -38,6 +39,52 @@ def skeletonPlot(skltnSq):
         ax.plot(bone[:,0], bone[:,1], bone[:,2], color='red') # used to create a line between two points
     plt.show()
     pass
+
+def setClrCycle(ax, cycles, rgb_0, stp):
+    clrList = []
+    for i in range(cycles):
+        rgb_copy = rgb_0
+        rgb_copy[0] = rgb_copy[0] - stp
+        clrList.append(rgb_copy)
+    ax.set_prop_cycle(cycler('color', clrList))
+
+
+def skeletonPlot(skltnSq):
+    # set color tuple
+    rgb = np.array((1.0,0.0,0.0))
+    clrStp = rgb[0]/len(skltnSq) # how much to decrement by the redness
+
+    # create figure
+    plt.rcParams["figure.figsize"] = [7.50, 6.00] # size of window on mac
+    plt.rcParams["figure.autolayout"] = True
+    fig = plt.figure()
+    ax = fig.add_subplot(projection="3d")
+
+    # set color cycle for different plots
+    clrCycleLst = crtCycleArr(len(skltnSq), rgb, clrStp)
+    ax.set_prop_cycle(cycler('color', ['c', 'm', 'y', 'k']))
+
+    # iterate through time points
+    for i in range(len(skltnSq)):
+        # extract coordinates
+        keyPts = skltnSq[i]
+        x = keyPts[:,0] # 2,7,14,26 => (2,7),(2,14),(2,26)
+        y = keyPts[:,1]
+        z = keyPts[:,2]
+
+        # create bones
+        boneTrpls = np.array([keyPts[[0,1],:], keyPts[[0,2],:], keyPts[[0,3],:]])
+
+        # make plot
+        #ax.scatter(x, y, z, c=rgb, s=100)
+        ax.scatter(x, y, z, s=100)
+        for bone in boneTrpls:
+            #ax.plot(bone[:,0], bone[:,1], bone[:,2], color=rgb) # used to create a line between two points
+                                                                # (!!!) limited to one color for all points
+            ax.plot(bone[:,0], bone[:,1], bone[:,2])
+        rgb[0] = rgb[0] - clrStp # decrement redness
+    plt.show()
+        
 
 if __name__ == "__main__":
     pass
