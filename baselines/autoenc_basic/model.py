@@ -10,7 +10,7 @@ from torch import nn
 class ED_Network(nn.Module): # inherit from nn.Module
     def __init__(self): # initialise layers
         super().__init__()
-        self.flatten = nn.Flatten() # flatten variable of self
+        self.flatten = nn.Flatten(start_dim=0) # by default retains 1 dimension (start_dim=1) because wants to keep batches
         self.linear_relu_stack = nn.Sequential(
             nn.Linear(4*15*3, 50), # 4 features * 15 different time points * 3 coordinates per feature
                                  #   features: left arm, right arm, head, spine point (ignoring the object coordinates for now)

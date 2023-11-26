@@ -164,7 +164,28 @@ def getdata():
     Xdata = np.array(X).astype(np.float32) # python has only floats of different length (which are 
                                             # floats and doubles essentially speaking)
     YData = np.array(Y).astype(np.float32)
+
+    Xdata, YData = filterKyPts(Xdata, YData)
     return Xdata, YData
+
+# Method to extract relevant keypoints and remove the rest. By default extract 4 keypoints and 
+# ignore the rest ([2, 7, 14, 26]).
+def filterKyPts(X, Y, slct_keys=[2, 7, 14, 26]):
+    for i in range(len(X)):
+        for t in range(len(X[0])): # remove unnecessary skeleton keypoints from timepoint t
+            t_new = []
+            for k in slct_keys:
+                t_new.append(X[i][t][k])
+            X[i][t] = t_new
+
+    for i in range(len(Y)):
+        for t in range(len(Y[0])): # remove unnecessary skeleton keypoints from timepoint t
+            t_new = []
+            for k in slct_keys:
+                t_new.append(Y[i][t][k])
+            Y[i][t] = t_new
+    return X, Y
+
 
 
 # MAIN:
