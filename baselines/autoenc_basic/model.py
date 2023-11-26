@@ -58,20 +58,18 @@ def train_loop(features, outputs, model, loss_fn, optimizer):
             print(f"loss: {loss:>7f}  [{iter:>5d}/{size:>5d}]")
         iter+=1
 
+# features and outputs is a numpy array
 def test_loop(features, outputs, model, loss_fn):
     model.eval() # evaluation mode
-    size = len(features)
     av_loss = 0
 
-    iter = 0
     with torch.no_grad(): # ensure less computation overhead by avoiding gradient computations
-        for mat in features:
+        for i, mat in enumerate(features):
             pred = model(mat)
-            av_loss += loss_fn(pred, outputs[iter]).item()
-            iter+=1
+            av_loss += loss_fn(pred, torch.flatten(outputs[i])).item() # flatten output to ensure they are the same
 
-    av_loss /= iter
-    print(f"Avg loss: {av_loss:>8f} \n")
+    av_loss /= (i+1)
+    print(f"avereage MAE for all samples: {av_loss:>8f} \n")
 
 ## MAIN
 

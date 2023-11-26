@@ -5,6 +5,8 @@ from torch import nn
 # Files:
 from model import ED_Network
 from dataset import getdata
+from model import test_loop
+from model import train_loop
 
 # METHODS
 # Method to return an example tensor of correct shape for forward feed. Note random input values 
@@ -18,6 +20,16 @@ def exFrwrdFd():
     print(m2(Xt))
     print(torch.flatten(Xt))
     return Xt
+
+def exFrwrdPrpData():
+    # example forward propagation of single instance
+    X, Y = getdata() # get data based on json files in Data folder
+    Xt = torch.from_numpy(X[0]) # convert to tensor 
+                                # only works on single instance hence X[0]
+    Yt = torch.from_numpy(Y)
+
+    rawOut = model(Xt)
+    print(rawOut)
 
 
 # MAIN
@@ -42,11 +54,12 @@ if __name__ == "__main__":
         print(model)
         print()
 
-
+    # example forward propagation of single instance
     X, Y = getdata() # get data based on json files in Data folder
-    Xt = torch.from_numpy(X[0]) # convert to tensor 
+    Xt = torch.from_numpy(X) # convert to tensor 
                                 # only works on single instance hence X[0]
     Yt = torch.from_numpy(Y)
 
-    rawOut = model(Xt)
-    print(rawOut)
+    #test_loop(Xt, Yt, model, nn.MSELoss())
+    test_loop(Xt, Yt, model, nn.L1Loss())
+    
