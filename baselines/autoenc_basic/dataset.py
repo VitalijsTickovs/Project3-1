@@ -94,29 +94,10 @@ def appendInstances(X, Y, intervals, wdw_len = 4, tm_pts_num=15):
         X.append(in_skltns) # 15 pts * 34 jnts * 3 crdnts in each row  # easier to append to standard arrays then to numpy
         Y.append(out_skltns) 
 
+
 # Method to extract relevant keypoints and remove the rest. By default extract 4 keypoints and 
 # ignore the rest ([2, 7, 14, 26]).
 def filterKyPts(X, Y, slct_keys=[2, 7, 14, 26]):
-    for i in range(len(X)):
-        for t in range(len(X[0])): # remove unnecessary skeleton keypoints from timepoint t
-            t_new = []
-            for k in slct_keys:
-                t_new.append(X[i][t][k])
-            #X[i][t].clear()
-            X[i][t] = t_new
-
-    for i in range(len(Y)):
-        for t in range(len(Y[0])): # remove unnecessary skeleton keypoints from timepoint t
-            t_new = []
-            for k in slct_keys:
-                t_new.append(Y[i][t][k])
-            #X[i][t].clear()
-            Y[i][t] = t_new
-    return X, Y
-
-# Method to extract relevant keypoints and remove the rest. By default extract 4 keypoints and 
-# ignore the rest ([2, 7, 14, 26]).
-def filterKyPts_np(X, Y, slct_keys=[2, 7, 14, 26]):
     newX = X[:,:,slct_keys,:]
     newY = Y[:,:,slct_keys,:]
 
@@ -197,7 +178,6 @@ def getdata():
     # Extract relevant key points of the skeleton
     Xdata, Ydata = filterKyPts(Xdata, Ydata)
 
-    
     return Xdata, YData
 
 
