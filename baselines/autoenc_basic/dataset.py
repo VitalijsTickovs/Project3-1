@@ -101,7 +101,7 @@ def filterKyPts(X, Y, slct_keys=[2, 7, 14, 26]):
     newX = X[:,:,slct_keys,:]
     newY = Y[:,:,slct_keys,:]
 
-    return X, Y
+    return newX, newY
 
 
 # Method which is a copy of the code in MAIN section. Essentially outputs the X and Y created after going 
