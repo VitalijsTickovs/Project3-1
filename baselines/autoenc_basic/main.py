@@ -3,11 +3,12 @@ import torch
 from torch import nn
 
 # Files:
-from model import ED_Network
 from dataset import getdata
+from model import ED_Network
 from model import test_loop
 from model import train_loop
 from model import optimizationLoop
+from drawSkeleton import skeletonPlot
 
 # METHODS
 # Method to return an example tensor of correct shape for forward feed. Note random input values 
@@ -81,10 +82,10 @@ if __name__ == "__main__":
                                 # only works on single instance hence X[0]
     Yt = torch.from_numpy(Y)
 
-    lr = 0.005 # (lr, epochs) => (0.005; 60), (0.05, 10); 
+    lr = 0.05 # (lr, epochs) => (0.005; 60), (0.05, 10); 
     optimizer = torch.optim.SGD(model.parameters(), lr)
     loss_fn = nn.L1Loss()
-    epochs = 60
+    epochs = 10
     optimizationLoop(Xt, Yt, model, loss_fn, optimizer, epochs)
     
     # Do a test on other data
@@ -95,3 +96,11 @@ if __name__ == "__main__":
     testXt = torch.from_numpy(testX)
     testYt = torch.from_numpy(testY)
     test_loop(testXt, testYt, model, nn.L1Loss())
+
+    # Let's try to visualise one skeleton
+    with torch.no_grad(): # don't use graident otherwise can't call numpy
+        rawOut = model(testXt[0])
+    arrOut = rawOut.numpy()
+    arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
+
+    skeletonPlot(arrOut)

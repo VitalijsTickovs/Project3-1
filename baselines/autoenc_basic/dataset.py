@@ -97,6 +97,7 @@ def appendInstances(X, Y, intervals, wdw_len = 4, tm_pts_num=15):
 
 # Method to extract relevant keypoints and remove the rest. By default extract 4 keypoints and 
 # ignore the rest ([2, 7, 14, 26]).
+# Bone pairs: (2,7), (2,14), (2,26)
 def filterKyPts(X, Y, slct_keys=[2, 7, 14, 26]):
     newX = X[:,:,slct_keys,:]
     newY = Y[:,:,slct_keys,:]
