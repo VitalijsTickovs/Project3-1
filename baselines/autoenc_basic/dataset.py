@@ -178,7 +178,7 @@ def getdata():
     # Extract relevant key points of the skeleton
     Xdata, Ydata = filterKyPts(Xdata, Ydata)
 
-    return Xdata, YData
+    return Xdata, Ydata
 
 
 
