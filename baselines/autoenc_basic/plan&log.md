@@ -53,3 +53,4 @@ Progress:
     - selection of keywords
 - Experiments toverify innerwoking of flatten
 - Successful check of single instance forward propagation
+- Implemented optimization loop

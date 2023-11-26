@@ -81,9 +81,17 @@ if __name__ == "__main__":
                                 # only works on single instance hence X[0]
     Yt = torch.from_numpy(Y)
 
-    lr = 0.005 # (lr, epochs) => (0.005; 40), (0.05, 10); 
+    lr = 0.005 # (lr, epochs) => (0.005; 60), (0.05, 10); 
     optimizer = torch.optim.SGD(model.parameters(), lr)
     loss_fn = nn.L1Loss()
-    epochs = 40
+    epochs = 60
     optimizationLoop(Xt, Yt, model, loss_fn, optimizer, epochs)
     
+    # Do a test on other data
+    testNames = ["skFloorLeft.json", "skFloorRight.json", 
+                 "skNoneLeft1.json", "skNoneLeft2.json", "skNoneLeft3.json",
+                 "skNoneRight1.json", "skNoneRight2.json", "skNoneRight3.json"]
+    testX, testY = getdata(testNames)
+    testXt = torch.from_numpy(testX)
+    testYt = torch.from_numpy(testY)
+    test_loop(testXt, testYt, model, nn.L1Loss())

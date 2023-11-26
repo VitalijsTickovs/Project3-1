@@ -106,7 +106,12 @@ def filterKyPts(X, Y, slct_keys=[2, 7, 14, 26]):
 
 # Method which is a copy of the code in MAIN section. Essentially outputs the X and Y created after going 
 # through all the training data.
-def getdata():
+def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3.json", 
+                "skCrateRight1.json", "skCrateRight2.json", "skCrateRight3.json", 
+                "skCupLeft1.json", "skCupLeft2.json", "skCupLeft3.json",
+                "skCupRight1.json", "skCupRight2.json", "skCupRight3.json", 
+                "skFeederLeft1.json", "skFeederLeft2.json", "skFeederLeft3.json",
+                "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"]):
     # X array:
     #   Needs to contain 4*15*3 data points per line because 4 features * 15 different time points * 3 
     #   coordinates per feature. Order: features, x, time-point 1 -> features, y, time-point 1 -> 
@@ -116,17 +121,10 @@ def getdata():
 
     X = []
     Y = []
-
-
     # Read file. TODO: multiple names
-    trainNames = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3.json", 
-                "skCrateRight1.json", "skCrateRight2.json", "skCrateRight3.json", 
-                "skCupLeft1.json", "skCupLeft2.json", "skCupLeft3.json",
-                "skCupRight1.json", "skCupRight2.json", "skCupRight3.json", 
-                "skFeederLeft1.json", "skFeederLeft2.json", "skFeederLeft3.json",
-                "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"]
+    
     rlPth = "Data/SkeletonData/"
-    for name in trainNames:
+    for name in namesList:
         # 1. Read data
         fullPath = rlPth+name
         contents = pd.read_json(fullPath)
