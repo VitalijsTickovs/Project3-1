@@ -47,3 +47,9 @@ Progress:
 - Created data preprocessing method in visual.ipynb
 - Next need to determine how big or small I should make the time window (e.g. currently 0.5 seconds)
     - likely links back to the idea of extracting data points and skipping over others (see GoodNotes education folder)
+
+##### 26 Nov 2023
+- Finished data loading and pre-processing
+    - selection of keywords
+- Experiments toverify innerwoking of flatten
+- Successful check of single instance forward propagation
