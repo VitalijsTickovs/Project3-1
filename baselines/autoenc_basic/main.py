@@ -4,8 +4,11 @@ from torch import nn
 
 # Files:
 from model import ED_Network
+from dataset import getdata
 
 ## MAIN
+print("here")
+print()
 full_debug = True
 
 device = (
@@ -24,6 +27,8 @@ if (full_debug):
     print(model)
     print()
 
-X = torch.rand(1, 4, 15, device=device) # tensor with random numbers
+#X = torch.rand(1, 4, 15, device=device) # tensor with random numbers
+X, Y = getdata() # get data based on json files in Data folder
+
 rawOut = model(X)
 print(rawOut)
