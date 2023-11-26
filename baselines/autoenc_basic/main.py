@@ -44,7 +44,8 @@ if __name__ == "__main__":
 
 
     X, Y = getdata() # get data based on json files in Data folder
-    Xt = torch.from_numpy(X[0]) # convert to tensor
+    Xt = torch.from_numpy(X[0]) # convert to tensor 
+                                # only works on single instance hence X[0]
     Yt = torch.from_numpy(Y)
 
     rawOut = model(Xt)
