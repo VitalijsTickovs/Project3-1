@@ -40,19 +40,21 @@ def singleSkeletonPlot(skltnSq):
     plt.show()
     pass
 
-def setClrCycle(ax, cycles, rgb_0, stp):
+def crtCycleArr(cycles, rgb, stp, step, ptsNum, boneNum):
     clrList = []
-    for i in range(cycles):
-        rgb_copy = rgb_0
-        rgb_copy[0] = rgb_copy[0] - stp
-        clrList.append(rgb_copy)
-    ax.set_prop_cycle(cycler('color', clrList))
+    for i in range(0, cycles, int(step)):
+        for rep in range(ptsNum+boneNum):
+            clrList.append(rgb.copy())
+        rgb[0] = rgb[0] - stp
+    print(clrList)
+    return clrList
 
 
-def skeletonPlot(skltnSq):
+def skeletonPlot(skltnSq, step=1.0):
     # set color tuple
-    rgb = np.array((1.0,0.0,0.0))
-    clrStp = rgb[0]/len(skltnSq) # how much to decrement by the redness
+    rgb =[1.0,0.0,0.0]
+    clrStp = rgb[0]/((len(skltnSq)/step)) # how much to decrement by the redness
+    print(clrStp)
 
     # create figure
     plt.rcParams["figure.figsize"] = [7.50, 6.00] # size of window on mac
@@ -61,11 +63,13 @@ def skeletonPlot(skltnSq):
     ax = fig.add_subplot(projection="3d")
 
     # set color cycle for different plots
-    clrCycleLst = crtCycleArr(len(skltnSq), rgb, clrStp)
-    ax.set_prop_cycle(cycler('color', ['c', 'm', 'y', 'k']))
+    ptsNum = (skltnSq[0].shape)[0] - 3
+    boneNum = 0 # preset (can't be computed)
+    clrCycleLst = crtCycleArr(len(skltnSq), rgb, clrStp, step, ptsNum, boneNum) #TODO: quadiple same color to prevent lines and points of different color
+    ax.set_prop_cycle(cycler('color', clrCycleLst))
 
     # iterate through time points
-    for i in range(len(skltnSq)):
+    for i in range(0,len(skltnSq),int(step)):
         # extract coordinates
         keyPts = skltnSq[i]
         x = keyPts[:,0] # 2,7,14,26 => (2,7),(2,14),(2,26)
@@ -78,11 +82,10 @@ def skeletonPlot(skltnSq):
         # make plot
         #ax.scatter(x, y, z, c=rgb, s=100)
         ax.scatter(x, y, z, s=100)
-        for bone in boneTrpls:
-            #ax.plot(bone[:,0], bone[:,1], bone[:,2], color=rgb) # used to create a line between two points
-                                                                # (!!!) limited to one color for all points
-            ax.plot(bone[:,0], bone[:,1], bone[:,2])
-        rgb[0] = rgb[0] - clrStp # decrement redness
+        for bone in boneTrpls:                               
+            ax.plot(bone[:,0], bone[:,1], bone[:,2])        # used to create a line between two points
+                                                            # (!!!) limited to one color for all points
+        #rgb[0] = rgb[0] - clrStp # decrement redness
     plt.show()
         
 

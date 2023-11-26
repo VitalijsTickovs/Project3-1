@@ -103,4 +103,4 @@ if __name__ == "__main__":
     arrOut = rawOut.numpy()
     arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
 
-    skeletonPlot(arrOut)
+    skeletonPlot(arrOut, 3.0)
