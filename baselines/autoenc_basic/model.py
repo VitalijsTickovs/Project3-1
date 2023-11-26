@@ -71,8 +71,7 @@ def test_loop(features, outputs, model, loss_fn):
     av_loss /= (i+1)
     print(f"avereage MAE for all samples: {av_loss:>8f} \n")
 
-def optimizationLoop(epochs, features, outputs, model, loss_fn, optimizer):
-    epochs = 10
+def optimizationLoop(features, outputs, model, loss_fn, optimizer, epochs=10):
     for t in range(epochs):
         print(f"Epoch {t+1}\n-------------------------------")
         train_loop(features, outputs, model, loss_fn, optimizer)

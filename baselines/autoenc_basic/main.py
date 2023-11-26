@@ -7,6 +7,7 @@ from model import ED_Network
 from dataset import getdata
 from model import test_loop
 from model import train_loop
+from model import optimizationLoop
 
 # METHODS
 # Method to return an example tensor of correct shape for forward feed. Note random input values 
@@ -40,6 +41,17 @@ def exTestLoop():
 
     test_loop(Xt, Yt, model, nn.L1Loss())
 
+def exTrainLoop():
+    # example forward propagation of single instance
+    X, Y = getdata() # get data based on json files in Data folder
+    Xt = torch.from_numpy(X) # convert to tensor 
+                                # only works on single instance hence X[0]
+    Yt = torch.from_numpy(Y)
+
+    lr = 0.05
+    optimizer = torch.optim.SGD(model.parameters(), lr)
+    train_loop(Xt, Yt, model, nn.L1Loss(), optimizer)
+
 
 # MAIN
 if __name__ == "__main__":
@@ -69,7 +81,9 @@ if __name__ == "__main__":
                                 # only works on single instance hence X[0]
     Yt = torch.from_numpy(Y)
 
-    lr = 0.05
+    lr = 0.005 # (lr, epochs) => (0.005; 40), (0.05, 10); 
     optimizer = torch.optim.SGD(model.parameters(), lr)
-    train_loop(Xt, Yt, model, nn.L1Loss(), optimizer)
+    loss_fn = nn.L1Loss()
+    epochs = 40
+    optimizationLoop(Xt, Yt, model, loss_fn, optimizer, epochs)
     
