@@ -1,14 +1,16 @@
 # Template code retrieved from : https://www.geeksforgeeks.org/ml-stochastic-gradient-descent-sgd/
+# Other resource : https://realpython.com/gradient-descent-algorithm-python/
 # Then modified to fit our project
-from Skeleton_Dataset.load_skeleton_tracking import *
+from Skeleton_Dataset.load_skeleton_tracking_ucla import *
+from load_skeletondata_DKE import *
 import numpy as np
 
-class SGD:
+class SGD: # STOCHASTIC GRADIENT DESCENT USING RANDOM MINI-BATCHES
     def __init__(self, lr=0.01, max_iter=1000, batch_size=32, tol=1e-3):
-        self.learning_rate = lr
+        self.learning_rate = lr # Small learning rates can result in very slow convergence.
         self.max_iteration = max_iter
         self.batch_size = batch_size
-        self.tolerence_convergence = tol
+        self.tolerence_convergence = tol # Tolerance for stopping criterion.
         self.theta = None
 
     def fit(self, X, y):
@@ -28,9 +30,9 @@ class SGD:
                 X_batch = X_flat[i:i+self.batch_size]
                 y_batch = y[i:i+self.batch_size]
                 grad = self.gradient(X_batch, y_batch)
-                self.theta -= self.learning_rate * grad  # Update theta
+                self.theta -= self.learning_rate * grad  # Update theta/weights
 
-            if np.linalg.norm(self.learning_rate * grad) < self.tolerence_convergence:
+            if np.linalg.norm(self.learning_rate * grad) < self.tolerence_convergence: # if the vector/weight update in the current iteration is less than or equal to tolerance stop iterating.
                 break
 
     def gradient(self, X, y): # gradient is used in fit, no need to flatten X
@@ -54,10 +56,10 @@ class SGD:
 ## SGD MODEL INITIALIZATION ##
 def initialize():
     # Load & Preprocess data
-    dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len = preprocess_ucla("Project3-1/BaselineModel/Skeleton_Dataset/ucla_data")
+    dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len = preprocess_ucla("BaselineModel/Skeleton_Dataset/ucla_data")
     # print ("no error in loading + preprocessing data")
 
-    # Make sure len(tr_fea_xyz) = len(tr_label) = 1019 = size of training data
+    # Make sure len(tr_fea_xyz) = len(tr_label) 
 
     # Create random dataset with 100 rows and 5 columns
     X = np.array(tr_fea_xyz)
@@ -79,10 +81,12 @@ def initialize():
     print(y_pred) 
 
     # Save model parameters & weights
-    model.save_weights("Project3-1/BaselineModel/SGD_model_weights.npy")
+    # model.save_weights("Project3-1/BaselineModel/SGD_model_weights.npy")
     print("model weights saved")
 
-# initialize() # Only run this once in the file, weights will be saved in "SGD_model_weights.npy"
+## MAIN PROGRAM ## (Run only once to initialize model)
+if __name__ == "__main__":
+    initialize() # Only run this once in the file, weights will be saved in "SGD_model_weights.npy"
 
 
 

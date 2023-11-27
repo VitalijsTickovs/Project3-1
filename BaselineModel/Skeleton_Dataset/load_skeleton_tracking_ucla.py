@@ -23,8 +23,8 @@ def load_ucla_data(path):
     del train_data['a02_s09_e04_v02']
     del test_data['a02_s09_e04_v03']
     # size of training and test data
-    print("Size of training data: ", len(train_data))
-    print("Size of test data: ", len(test_data))
+    # print("Size of training data: ", len(train_data))
+    # print("Size of test data: ", len(test_data))
     return train_data, test_data
 
 
@@ -108,7 +108,7 @@ def preprocess_ucla(path):
     return dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len
 
 
-# dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len = preprocess_ucla("Project3-1/BaselineModel/Skeleton_Dataset/ucla_data")
+# dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len = preprocess_ucla("BaselineModel/Skeleton_Dataset/ucla_data") # Sometimes you need to add project3-1/ before sometimes not. Depends if you are on local.
 # print("dsamp_train: ", dsamp_train) # Squeleton sample train data vectorized under dictionary of 2D arrays
 # print("dsamp_test: ", dsamp_test) # Squeleton sample test data vectorized under dictionary of 2D arrays
 

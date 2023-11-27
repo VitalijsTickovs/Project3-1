@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./BaselineModel/Skeleton Dataset"
+        "./BaselineModel/Skeleton Dataset",
+        "./BaselineModel/Skeleton_Dataset"
     ]
 }
