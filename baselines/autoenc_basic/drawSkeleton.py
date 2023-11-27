@@ -63,7 +63,7 @@ def skeletonPlot(skltnSq, step=1.0):
     ax = fig.add_subplot(projection="3d")
 
     # set color cycle for different plots
-    ptsNum = (skltnSq[0].shape)[0] - 4
+    ptsNum = 0
     boneNum = 3 # preset (can't be computed)
     clrCycleLst = crtCycleArr(len(skltnSq), rgb, clrStp, step, ptsNum, boneNum) #TODO: quadiple same color to prevent lines and points of different color
     ax.set_prop_cycle(cycler('color', clrCycleLst))
@@ -80,12 +80,10 @@ def skeletonPlot(skltnSq, step=1.0):
         boneTrpls = np.array([keyPts[[0,1],:], keyPts[[0,2],:], keyPts[[0,3],:]])
 
         # make plot
-        #ax.scatter(x, y, z, c=rgb, s=100)
-        ax.scatter(x, y, z, s=100)
+        #ax.scatter(x, y, z, s=100)
         for bone in boneTrpls:                               
             ax.plot(bone[:,0], bone[:,1], bone[:,2])        # used to create a line between two points
                                                             # (!!!) limited to one color for all points
-        #rgb[0] = rgb[0] - clrStp # decrement redness
     plt.show()
         
 
