@@ -45,7 +45,7 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
         # 4. Next take broken down data and select 15 time points adding them to create X and Y arrays
 
         # check if dimensions are correct
-        if (True): 
+        if (False): 
             print(contents.shape[1]) # number of time point
             column = contents.iloc[:,0] # ignore this is  a list of lists 
             #                           (i.e. including velocoties and dimensions)
