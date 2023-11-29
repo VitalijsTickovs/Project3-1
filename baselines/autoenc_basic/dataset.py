@@ -82,12 +82,12 @@ def appendInstances(X, Y, intervals, wdw_len = 4, tm_pts_num=15):
         wdw_end = wdw_len+i 
 
         slct_intrv = []
-        for in_i in range(i, wdw_hlf_end): # extract relevant time intervals
+        for in_i in range(i, wdw_hlf_end): # extract relevant time intervals (input window)
             slct_intrv.extend(intervals[in_i])
         in_skltns = selectTimePoints(slct_intrv, tm_pts_num)
 
         slct_intrv = [] # use same array, but clear it
-        for out_i in range(wdw_hlf_end, wdw_end):
+        for out_i in range(wdw_hlf_end, wdw_end): # (output window)
             slct_intrv.extend(intervals[out_i])
         out_skltns = selectTimePoints(slct_intrv, tm_pts_num)
 
