@@ -1,50 +1,49 @@
 # Template code retrieved from : https://www.geeksforgeeks.org/ml-stochastic-gradient-descent-sgd/
 # Other resource : https://realpython.com/gradient-descent-algorithm-python/
 # Then modified to fit our project
-from Skeleton_Dataset.load_skeleton_tracking_ucla import *
-from load_skeletondata_DKE import *
+import random
+from Skeleton_Dataset.load_datasetSGD import *
 import numpy as np
 
-class SGD: # STOCHASTIC GRADIENT DESCENT USING RANDOM MINI-BATCHES
-    def __init__(self, lr=0.01, max_iter=1000, batch_size=32, tol=1e-3):
-        self.learning_rate = lr # Small learning rates can result in very slow convergence.
+class SGD:
+    def __init__(self, lr=0.01, max_iter=500, batch_size=32, tol=1e-3):
+        self.learning_rate = lr
         self.max_iteration = max_iter
         self.batch_size = batch_size
-        self.tolerence_convergence = tol # Tolerance for stopping criterion.
+        self.tolerance_convergence = tol
         self.theta = None
 
     def fit(self, X, y):
-        n, _, _ = X.shape
-        X_flat = X.reshape(n, -1)  # Flatten the last dimensions
-        _, d = X_flat.shape
-        y = y.reshape(-1, 1) # Reshape y into a column vector 
-        self.theta = np.random.randn(d)
-        self.theta = self.theta.reshape(-1, 1)  # Reshape self.theta to be the same shape as y
-
+        # store dimensions of input tensor
+        n, d, v = X.shape
+        # Initialize random Theta for every feature
+        self.theta = np.random.randn(d, v) # change theta
+        print(self.theta.shape)
         for _ in range(self.max_iteration):
-            indices = np.random.permutation(n)
-            X_flat = X_flat[indices]
-            y = y[indices]
-
-            for i in range(0, n, self.batch_size):
-                X_batch = X_flat[i:i+self.batch_size]
-                y_batch = y[i:i+self.batch_size]
-                grad = self.gradient(X_batch, y_batch)
-                self.theta -= self.learning_rate * grad  # Update theta/weights
-
-            if np.linalg.norm(self.learning_rate * grad) < self.tolerence_convergence: # if the vector/weight update in the current iteration is less than or equal to tolerance stop iterating.
+            # Shuffle the data
+            indices = random.randint(0, n-(self.batch_size+1))
+            X_batch = X[indices:indices+self.batch_size] # Select 32 skeletons starting from random index between 0 and 214
+            y_batch = y[indices:indices+self.batch_size] # Select 32 skeletons starting from random index between 0 and 214
+            
+            # Iterate over mini-batches of keypoints
+            for i in range(0, self.batch_size):
+                X_skel = X_batch[i] # Select a skeleton amongst the random batch
+                y_skel = y_batch[i] # Select a skeleton amongst the random batch
+                grad = self.gradient(X_skel, y_skel) # Perform gradient descent on two random skeletons
+                self.theta -= self.learning_rate * grad 
+            # Check for convergence
+            if np.linalg.norm(grad) < self.tolerance_convergence:
                 break
 
-    def gradient(self, X, y): # gradient is used in fit, no need to flatten X
+    def gradient(self, X, y):
         n = len(y)
-        y_pred = np.dot(X, self.theta)
+        y_pred = X * self.theta  # theta has to have the same dimensions as X with X being a random skeleton
         error = y_pred - y
-        grad = np.dot(X.T, error) / n
+        grad = (X * error) / n  # element-wise multiplication and sum along the first axis
         return grad
 
     def predict(self, X):
-        X_flat = X.reshape(len(X), -1) # Flatten the last dimensions
-        y_pred = np.dot(X_flat, self.theta)
+        y_pred = X * self.theta  # element-wise multiplication
         return y_pred
     
     def load_weights(self, filename="SGD_model_weights.npy"):
@@ -56,32 +55,34 @@ class SGD: # STOCHASTIC GRADIENT DESCENT USING RANDOM MINI-BATCHES
 ## SGD MODEL INITIALIZATION ##
 def initialize():
     # Load & Preprocess data
-    dsamp_train, dsamp_test, tr_fea_xyz, tr_label, tr_seq_len, te_fea_xyz, te_label, te_seq_len = preprocess_ucla("BaselineModel/Skeleton_Dataset/ucla_data")
-    # print ("no error in loading + preprocessing data")
+    data = getdata()
+    print ("no error in loading + preprocessing data")
 
-    # Make sure len(tr_fea_xyz) = len(tr_label) 
-
-    # Create random dataset with 100 rows and 5 columns
-    X = np.array(tr_fea_xyz)
-    # print("no error in X declaration") 
-
+    X = np.array(data)
+    skeleton_features = np.array(data)
+    print("no error in X and features declaration") 
+    
     # create corresponding target value by adding random noise in the dataset
     # random noise avoids getting stuck in local minima
-    y = np.dot(X.T, np.array(tr_label)) + np.random.randn(60, 50, 10) * 0.1
-    # print("no error in y declaration")
+    y = (X * skeleton_features) + np.random.randn(247, 34, 3) * 0.1 
+    print("no error in y declaration")
 
     # Create an instance of the SGD class
     model = SGD(lr=0.01, max_iter=1000, batch_size=32, tol=1e-3) # change param if needed
     # print("no error in model declaration")
 
     model.fit(X, y) 
+    print("no error in model fitting")
 
     # Predict using predict method from model
-    y_pred = model.predict(X) # Matrix of predicted values
-    print(y_pred) 
+    # X is number of skeletons right now I'm predicting the whole training data so 247 skeletons in advance
+    # But I can predict one or n skeletons at a time by changing the dimensions of X
+    # X doesn't necessarily have to be the training data
+    # y_pred = model.predict(X) 
+    # print("no error in prediction")
 
     # Save model parameters & weights
-    # model.save_weights("Project3-1/BaselineModel/SGD_model_weights.npy")
+    model.save_weights("BaselineModel/SGD_model_weights.npy")
     print("model weights saved")
 
 ## MAIN PROGRAM ## (Run only once to initialize model)
