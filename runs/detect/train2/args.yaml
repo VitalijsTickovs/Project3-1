@@ -2,14 +2,14 @@ task: detect
 mode: train
 model: yolov8n.yaml
 data: local_env\data.yaml
-epochs: 1
-patience: 50
+epochs: 200
+patience: 20
 batch: 16
 imgsz: 640
 save: true
 save_period: -1
 cache: false
-device: null
+device: '0'
 workers: 8
 project: null
 name: train2
