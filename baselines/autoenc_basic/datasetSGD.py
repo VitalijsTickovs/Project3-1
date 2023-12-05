@@ -25,7 +25,7 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
                 "skFeederLeft1.json", "skFeederLeft2.json", "skFeederLeft3.json",
                 "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"]):
     
-    rlPth = "Data/SkeletonData/"
+    rlPth = "Data/SkeletonData/ShortIntervals/"
     for name in namesList:
         # 1. Read data
         fullPath = rlPth+name
