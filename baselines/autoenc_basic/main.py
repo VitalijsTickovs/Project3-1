@@ -85,7 +85,7 @@ if __name__ == "__main__":
     lr = 0.05 # (lr, epochs) => (0.005; 60), (0.05, 10); 
     optimizer = torch.optim.SGD(model.parameters(), lr)
     loss_fn = nn.L1Loss()
-    epochs = 10
+    epochs = 60
     optimizationLoop(Xt, Yt, model, loss_fn, optimizer, epochs)
     
     # Do a test on other data

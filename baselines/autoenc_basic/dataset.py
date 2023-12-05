@@ -94,6 +94,29 @@ def appendInstances(X, Y, intervals, wdw_len = 4, tm_pts_num=15):
         X.append(in_skltns) # 15 pts * 34 jnts * 3 crdnts in each row  # easier to append to standard arrays then to numpy
         Y.append(out_skltns) 
 
+# Method similar to appendInstances, but with the ability to define the size of input and output 
+#   windows instead of the size of the entire window 
+# Input: 
+#   wdwSz:
+#       array containing length of input window and output window (indices 0 and 1 respectively)
+def appendInstances2(X, Y, intervals, wdwSz =[4,4], tm_pts_num=15):
+    for i in range(len(intervals)-(wdwSz[0]+wdwSz[1]-1)): # how much windows do I get in this interval? -2 from the end, 
+                                        # -1 from the beginning. Hence total -3.
+        wdw_hlf_end = round((wdwSz[0])+i) # move the sliding window
+        wdw_end = wdwSz[0]+wdwSz[1]+i 
+
+        slct_intrv = []
+        for in_i in range(i, wdw_hlf_end): # extract relevant time intervals (input window)
+            slct_intrv.extend(intervals[in_i])
+        in_skltns = selectTimePoints(slct_intrv, tm_pts_num)
+
+        slct_intrv = [] # use same array, but clear it
+        for out_i in range(wdw_hlf_end, wdw_end): # (output window)
+            slct_intrv.extend(intervals[out_i])
+        out_skltns = selectTimePoints(slct_intrv, tm_pts_num)
+
+        X.append(in_skltns) # 15 pts * 34 jnts * 3 crdnts in each row  # easier to append to standard arrays then to numpy
+        Y.append(out_skltns) 
 
 # Method to extract relevant keypoints and remove the rest. By default extract 4 keypoints and 
 # ignore the rest ([2, 7, 14, 26]).
@@ -151,7 +174,8 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
         # 4. Next take broken down data and select 15 time points adding them to create X and Y arrays
         wdw_len = 4
         tm_pts_num = 15
-        appendInstances(X, Y, intervals, wdw_len, tm_pts_num)
+        #appendInstances(X, Y, intervals, wdw_len, tm_pts_num)
+        appendInstances2(X, Y, intervals, [2,4], tm_pts_num)
 
         # check if dimensions are correct
         if (True): 

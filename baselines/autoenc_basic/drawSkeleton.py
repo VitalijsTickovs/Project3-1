@@ -46,7 +46,6 @@ def crtCycleArr(cycles, rgb, stp, step, ptsNum, boneNum):
         for rep in range(ptsNum+boneNum):
             clrList.append(rgb.copy())
         rgb[0] = rgb[0] - stp
-    print(clrList)
     return clrList
 
 
@@ -54,7 +53,6 @@ def skeletonPlot(skltnSq, step=1.0):
     # set color tuple
     rgb =[1.0,0.0,0.0]
     clrStp = rgb[0]/((len(skltnSq)/step)) # how much to decrement by the redness
-    print(clrStp)
 
     # create figure
     plt.rcParams["figure.figsize"] = [7.50, 6.00] # size of window on mac
