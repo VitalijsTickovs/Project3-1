@@ -147,7 +147,7 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
     Y = []
     # Read file. TODO: multiple names
     
-    rlPth = "Data/SkeletonData/"
+    rlPth = "Data/SkeletonData/ShortIntervals/"
     for name in namesList:
         # 1. Read data
         fullPath = rlPth+name

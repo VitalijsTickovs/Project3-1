@@ -103,4 +103,8 @@ if __name__ == "__main__":
     arrOut = rawOut.numpy()
     arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
 
+    # save model weights
+    torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights.pth')
+    
+    # basic skeleton visualisation
     skeletonPlot(arrOut, 5.0)
