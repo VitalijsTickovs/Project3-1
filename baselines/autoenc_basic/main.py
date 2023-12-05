@@ -53,30 +53,8 @@ def exTrainLoop():
     optimizer = torch.optim.SGD(model.parameters(), lr)
     train_loop(Xt, Yt, model, nn.L1Loss(), optimizer)
 
-
-# MAIN
-if __name__ == "__main__":
-    print("here")
-    print()
-    full_debug = True
-
-    device = (
-        "cuda"
-        if torch.cuda.is_available()
-        else "mps"
-        if torch.backends.mps.is_available()
-        else "cpu"
-    )
-    model = ED_Network().to(device)
-
-    if (full_debug):
-        print(f"Using {device} device")
-        print()
-
-        print(model)
-        print()
-
-    # example forward propagation of single instance
+# method which loads the data and trains the model from scratch. Weights are saved at the end.
+def loadTrainTest(model):
     X, Y = getdata() # get data based on json files in Data folder
     Xt = torch.from_numpy(X) # convert to tensor 
                                 # only works on single instance hence X[0]
@@ -97,14 +75,48 @@ if __name__ == "__main__":
     testYt = torch.from_numpy(testY)
     test_loop(testXt, testYt, model, nn.L1Loss())
 
+    # save model weights
+    torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights.pth')
+    
     # Let's try to visualise one skeleton
     with torch.no_grad(): # don't use graident otherwise can't call numpy
         rawOut = model(testXt[0])
     arrOut = rawOut.numpy()
     arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
-
-    # save model weights
-    torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights.pth')
-    
-    # basic skeleton visualisation
     skeletonPlot(arrOut, 5.0)
+
+# method which loads the weights and tests the model
+def loadTest():
+    model.load_state_dict(torch.load('baselines/autoenc_basic/Weights/model_weights.pth'))
+    testNames = ["skFloorLeft.json", "skFloorRight.json", 
+                 "skNoneLeft1.json", "skNoneLeft2.json", "skNoneLeft3.json",
+                 "skNoneRight1.json", "skNoneRight2.json", "skNoneRight3.json"]
+    testX, testY = getdata(testNames)
+    testXt = torch.from_numpy(testX)
+    testYt = torch.from_numpy(testY)
+    test_loop(testXt, testYt, model, nn.L1Loss())
+    pass
+
+# MAIN
+if __name__ == "__main__":
+    # pre-setting procedure
+    full_debug = True
+
+    device = (
+        "cuda"
+        if torch.cuda.is_available()
+        else "mps"
+        if torch.backends.mps.is_available()
+        else "cpu"
+    )
+    model = ED_Network().to(device)
+
+    if (full_debug):
+        print(f"Using {device} device")
+        print()
+
+        print(model)
+        print()
+
+    # space for execution of a method below
+    loadTest()
