@@ -85,7 +85,7 @@ def loadTrainTest(model):
     arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
     skeletonPlot(arrOut, 5.0)
 
-# method which loads the weights and tests the model
+# method which loads the saved weights and tests the model
 def loadTest():
     model.load_state_dict(torch.load('baselines/autoenc_basic/Weights/model_weights.pth'))
     testNames = ["skFloorLeft.json", "skFloorRight.json", 
