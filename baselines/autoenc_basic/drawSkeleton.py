@@ -49,7 +49,7 @@ def crtCycleArr(cycles, rgb, stp, step, ptsNum, boneNum):
     return clrList
 
 
-def skeletonPlot(skltnSq, step=1.0):
+def skeletonPlot(skltnSq, step=1.0, title="default"):
     # set color tuple
     rgb =[1.0,0.0,0.0]
     clrStp = rgb[0]/((len(skltnSq)/step)) # how much to decrement by the redness
@@ -59,6 +59,7 @@ def skeletonPlot(skltnSq, step=1.0):
     plt.rcParams["figure.autolayout"] = True
     fig = plt.figure()
     ax = fig.add_subplot(projection="3d")
+    ax.set_title(title)
 
     # set color cycle for different plots
     ptsNum = 0

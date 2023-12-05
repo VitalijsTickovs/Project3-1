@@ -78,12 +78,19 @@ def loadTrainTest(model):
     # save model weights
     torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights.pth')
     
-    # Let's try to visualise one skeleton
+    # Let's try to visualise one skeleton prediction
     with torch.no_grad(): # don't use graident otherwise can't call numpy
         rawOut = model(testXt[0])
     arrOut = rawOut.numpy()
     arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
-    skeletonPlot(arrOut, 5.0)
+    skeletonPlot(arrOut, 5.0, "prediction")
+
+    with torch.no_grad(): # don't use graident otherwise can't call numpy
+        rawOut = model(testYt[0])
+    arrOut = rawOut.numpy()
+    arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
+    skeletonPlot(arrOut, 5.0, "real")
+
 
 # method which loads the saved weights and tests the model
 def loadTest():
@@ -95,7 +102,19 @@ def loadTest():
     testXt = torch.from_numpy(testX)
     testYt = torch.from_numpy(testY)
     test_loop(testXt, testYt, model, nn.L1Loss())
-    pass
+    
+    # Let's try to visualise one skeleton prediction
+    with torch.no_grad(): # don't use graident otherwise can't call numpy
+        rawOut = model(testXt[0])
+    arrOut = rawOut.numpy()
+    arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
+    skeletonPlot(arrOut, 5.0, "prediction")
+
+    with torch.no_grad(): # don't use graident otherwise can't call numpy
+        rawOut = model(testYt[0])
+    arrOut = rawOut.numpy()
+    arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
+    skeletonPlot(arrOut, 5.0, "real")
 
 # MAIN
 if __name__ == "__main__":
