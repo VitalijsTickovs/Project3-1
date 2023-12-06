@@ -1,6 +1,7 @@
 # Packages:
 import torch
 from torch import nn
+import time
 
 # Files:
 from dataset import getdata
@@ -78,18 +79,7 @@ def loadTrainTest(model):
     # save model weights
     torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights.pth')
     
-    # Let's try to visualise one skeleton prediction
-    with torch.no_grad(): # don't use graident otherwise can't call numpy
-        rawOut = model(testXt[0])
-    arrOut = rawOut.numpy()
-    arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
-    skeletonPlot(arrOut, 5.0, "prediction")
-
-    with torch.no_grad(): # don't use graident otherwise can't call numpy
-        rawOut = model(testYt[0])
-    arrOut = rawOut.numpy()
-    arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
-    skeletonPlot(arrOut, 5.0, "real")
+    drawSkltns(testXt, testYt)
 
 
 # method which loads the saved weights and tests the model
@@ -98,11 +88,13 @@ def loadTest():
     testNames = ["skFloorLeft.json", "skFloorRight.json", 
                  "skNoneLeft1.json", "skNoneLeft2.json", "skNoneLeft3.json",
                  "skNoneRight1.json", "skNoneRight2.json", "skNoneRight3.json"]
-    testX, testY = getdata(testNames)
+    testX, testY = getdata(testNames, False)
     testXt = torch.from_numpy(testX)
     testYt = torch.from_numpy(testY)
     test_loop(testXt, testYt, model, nn.L1Loss())
     
+# method for drawing skeleton sequences
+def drawSkltns(testXt, testYt):
     # Let's try to visualise one skeleton prediction
     with torch.no_grad(): # don't use graident otherwise can't call numpy
         rawOut = model(testXt[0])
@@ -115,6 +107,19 @@ def loadTest():
     arrOut = rawOut.numpy()
     arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
     skeletonPlot(arrOut, 5.0, "real")
+
+# method for computing average forward propgation time
+def avgFrwdPropTm(n = 100):
+    sum = 0
+    for i in range(n):
+        X = torch.rand(3, 4, 15, device=device) # tensor with random numbers
+        print(i)
+        start_time = time.time()
+        rawOut = model(X)
+        sum += (time.time() - start_time)
+    rslt = sum/n
+    print(rslt, "seconds or", rslt*1000, "ms")
+    return rslt
 
 # MAIN
 if __name__ == "__main__":
@@ -138,4 +143,4 @@ if __name__ == "__main__":
         print()
 
     # space for execution of a method below
-    loadTest()
+    tmp = avgFrwdPropTm()

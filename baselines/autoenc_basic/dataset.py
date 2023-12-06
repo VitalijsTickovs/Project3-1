@@ -135,7 +135,7 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
                 "skCupLeft1.json", "skCupLeft2.json", "skCupLeft3.json",
                 "skCupRight1.json", "skCupRight2.json", "skCupRight3.json", 
                 "skFeederLeft1.json", "skFeederLeft2.json", "skFeederLeft3.json",
-                "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"]):
+                "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"], debug = True):
     # X array:
     #   Needs to contain 4*15*3 data points per line because 4 features * 15 different time points * 3 
     #   coordinates per feature. Order: features, x, time-point 1 -> features, y, time-point 1 -> 
@@ -178,7 +178,7 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
         appendInstances2(X, Y, intervals, [2,4], tm_pts_num)
 
         # check if dimensions are correct
-        if (True): 
+        if (debug): 
             print(len(intervals)-3)
             print(len(X)) # this should be equal to value on the line above OR add up (if X non empty)
             print(len(X[0])) # this should be 15
