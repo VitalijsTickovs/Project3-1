@@ -108,9 +108,10 @@ def drawSkltns(testXt, testYt):
     arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
     skeletonPlot(arrOut, 5.0, "real")
 
-# method for computing average forward propgation time
-def avgFrwdPropTm(n = 100):
+# method for computing average forward propgation time (last measurment: 0.9092473983764648 ms)
+def avgFrwdPropTm(model, n = 100):
     sum = 0
+    model.load_state_dict(torch.load('baselines/autoenc_basic/Weights/model_weights.pth'))
     for i in range(n):
         X = torch.rand(3, 4, 15, device=device) # tensor with random numbers
         print(i)
@@ -143,4 +144,4 @@ if __name__ == "__main__":
         print()
 
     # space for execution of a method below
-    tmp = avgFrwdPropTm()
+    tmp = avgFrwdPropTm(model)
