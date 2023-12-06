@@ -1,11 +1,12 @@
 import numpy as np
 import SGD
 import time
-
-# TODO : Represent and Visualize current output
+import random
 
 # TODO : Make a continuous prediction function
 # TODO : Fetch continuous data from camera
+
+THRESHOLD = 0.5
 
 def fetch_data():
     # Fetch continuous data from camera
@@ -30,21 +31,28 @@ if __name__ == "__main__":
         if elapsed_time > timestep:
             data = fetch_data()
     
+            # Compute and evaluate prediction
             prediction = model.predict(data)
+            l1_loss,cross_entropy_loss = model.evaluate_loss(prediction, data)
 
             # If prediction accuracy is below a certain threshold,
-            # for prediction accuracy : I need a way to compare the prediction with the actual output
-            # If I don't have a way to evaluate the prediction, I just have to fit the model with the new datastream
-            # thus initialization + saving the model would be useless
+            if l1_loss < THRESHOLD or cross_entropy_loss < THRESHOLD:
+                # Output prediction
+                print(prediction)
+            
+            # retrain model with new datastream
+            else: 
+                model.fit(data, data)
+                second_prediction = model.predict(data)
+                # output prediction
 
-                # Retrain model with new datastream : 
-                # maybe retrain with lower batch-size and lower iterations to improve speed
-                # model.fit(data, # data_labels)
-                # second_prediction = model.predict(data)
+            
 
-                # Output second_prediction
+          
 
-            # Else, output prediction
+             
+
+        
 
 
 
