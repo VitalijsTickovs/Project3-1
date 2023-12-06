@@ -84,6 +84,9 @@ def skeletonPlot(skltnSq, step=1.0, title="default"):
             ax.plot(bone[:,0], bone[:,1], bone[:,2])        # used to create a line between two points
                                                             # (!!!) limited to one color for all points
     plt.show()
+
+    def cmprtvSkltPlt():
+        pass
         
 
 if __name__ == "__main__":
