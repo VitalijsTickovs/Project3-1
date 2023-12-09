@@ -77,7 +77,7 @@ class SGD:
 
         # Get Average of distances
         avrg = np.mean(distances)
-        return avrg
+        return avrg 
         
     def plot(self,Skeleton, Prediction_Skeleton):
         # Create a 3D axes
@@ -147,7 +147,7 @@ def initialize():
     # print("no error in y declaration")
 
     # Create an instance of the SGD class
-    model = SGD(lr=0.01, max_iter=1000, batch_size=32, tol=1e-3) # change param if needed
+    model = SGD(lr=0.001, max_iter=10000, batch_size=10, tol=1e-5) # change param if needed
     # print("no error in model declaration")
 
     model.fit(X, y) 
