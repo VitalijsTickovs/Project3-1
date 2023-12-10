@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
+import pickle as pkl
 
 # DESCRIPTION: 
 ## copy of file from visual.ipynb
@@ -129,7 +130,9 @@ def appendInstances(X, Y, intervals, wdw_len = 4, tm_pts_num=15):
 #   windows instead of the size of the entire window 
 # Input: 
 #   wdwSz:
-#       array containing length of input window and output window (indices 0 and 1 respectively)
+#       array containing length of input window and output window (indices 0 and 1 respectively). 
+#       One unit corresponds to one interval (default an 0.5 second interval but can be any depending on
+#       definiton in intervalBreak )
 def appendInstances2(X, Y, intervals, wdwSz =[4,4], tm_pts_num=15):
     for i in range(len(intervals)-(wdwSz[0]+wdwSz[1]-1)): # how much windows do I get in this interval? -2 from the end, 
                                         # -1 from the beginning. Hence total -3.
@@ -234,7 +237,49 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
 
     return Xdata, Ydata
 
+# method similar to getData but created specifically for AMASS dataset hence has changes and assumptions 
+# made for AMASS. For example: 
+# - 60 fps
+# - pickle file with skeleton data in a particular format must be available  
+def getDataAMASS(pklPath='baselines/autoenc_basic/experiment_phase2/data.obj'):
+    # X array:
+    #   Needs to contain 4*15*3 data points per line because 4 features * 15 different time points * 3 
+    #   coordinates per feature. Order: features, x, time-point 1 -> features, y, time-point 1 -> 
+    #   features, z, time-point 1 -> features, x, time-point 2 -> ... .
+    # Y array:
+    #   Similar fashion, but this time it is for output and not input.
+    X = []
+    Y = []
 
+    # 1. get data from the pkl file 
+    fileObj = open(pklPath, 'rb')
+    annotations = pkl.load(fileObj)
+    fileObj.close()
+
+    
+    fltr_annotations = []
+    for i in range(len(annotations)):
+        # 2. filter 4 relevant keypoints
+        skltSeq = annotations[i]
+        flt_skltSeq = skltSeq[:,:,[9, 20, 21, 15],:] # extract 4 relevant keypoints
+
+        # 3. single frame is 1/60 (60 fps) -> do an interval break into 0.5 second intervals
+        # dimensions: (actions, 0.5 intervals, skeletons, keypoints, coordinates)
+        intervals = intervalBreakAMASS(flt_skltSeq)
+
+        # 4. Next take broken down data and select 15 time points adding them to create X and Y arrays
+        tm_pts_num = 15
+        appendInstances2(X, Y, intervals, [1,2], tm_pts_num)
+    
+    # check if same dimensions everywhere + convert to numpy
+    Xdata = np.array(X).astype(np.float32) # python has only floats of different length (which are 
+                                            # floats and doubles essentially speaking)
+    Ydata = np.array(Y).astype(np.float32)
+
+    # Extract relevant key points of the skeleton
+    Xdata, Ydata = filterKyPts(Xdata, Ydata)
+
+    return Xdata, Ydata
 
 # MAIN:
 if __name__ == "__main__":
