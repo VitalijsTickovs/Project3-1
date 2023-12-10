@@ -1,7 +1,10 @@
 import torch
-
+from torch import nn
+import numpy as np
 
 from main import loadTrainTestSplit
+from main import loadTest
+from main import preloadTrainTest
 from model import ED_Network
 
 
@@ -35,6 +38,14 @@ def intervalBreakAMASS(contents, tm_wdw = 0.5):
         prev_i = intr_i
     return intervals
 
+# visualise how L1 loss is computed
+def visualiseL1Loss():
+    loss_fn = nn.L1Loss()
+    tens1 = torch.from_numpy(np.array([[1,2], [3,0]]).astype(np.float32))
+    tens2 = torch.from_numpy(np.array([[3,3], [3,5]]).astype(np.float32))
+    result = loss_fn(tens1, tens2).item()
+    print("result: ", result)
+
 if __name__ == "__main__":
     # pre-setting procedure
     full_debug = True
@@ -55,5 +66,11 @@ if __name__ == "__main__":
         print(model)
         print()
 
-    loadTrainTestSplit(model, epochs=5)
-    
+    # 1. redo training from scratch:
+    # loadTrainTestSplit(model, epochs=5) 
+
+    # 2. load weights and do test:
+    loadTest(model, wgtPth='baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth', isAMASS=True, draw=True)
+
+    # 3. load weights and continue training:
+    # preloadTrainTest(model, epochs = 10, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth')

@@ -11,6 +11,7 @@ from model import test_loop
 from model import train_loop
 from model import optimizationLoop
 from drawSkeleton import skeletonPlot
+from drawSkeleton import cmprtvSkltPlt
 
 # METHODS
 # Method to return an example tensor of correct shape for forward feed. Note random input values 
@@ -110,20 +111,69 @@ def loadTrainTestSplit(model, epochs = 60, isAMASS = True):
     # save model weights
     torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth')
 
+def preloadTrainTest(model, epochs = 60, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth'):
+    if (isAMASS):
+        X, Y = getdataAMASS() # get data based on json files in Data folder
+    
+    halfEnd = int(len(X)//2) # divide int train and test (currently by half)
+    end = len(X)
+    X_train = X[0:(halfEnd-1)]
+    Y_train = Y[0:(halfEnd-1)]
+    X_test = X[halfEnd:end]
+    Y_test = Y[halfEnd:end]
+
+    Xt = torch.from_numpy(X_train) # convert to tensor 
+                                # only works on single instance hence X[0]
+    Yt = torch.from_numpy(Y_train)
+
+    # load model weights
+    model.load_state_dict(torch.load(wghtPth))
+
+    lr = 0.05 # (lr, epochs) => (0.005; 60), (0.05, 10); 
+    optimizer = torch.optim.SGD(model.parameters(), lr)
+    loss_fn = nn.L1Loss()
+    optimizationLoop(Xt, Yt, model, loss_fn, optimizer, epochs)
+    
+    # Do a test on other data
+    testXt = torch.from_numpy(X_test)
+    testYt = torch.from_numpy(Y_test)
+    test_loop(testXt, testYt, model, nn.L1Loss())
+
+    # save model weights
+    torch.save(model.state_dict(), wghtPth)
+
 
 # method which loads the saved weights and tests the model
-def loadTest():
-    model.load_state_dict(torch.load('baselines/autoenc_basic/Weights/model_weights.pth'))
-    testNames = ["skFloorLeft.json", "skFloorRight.json", 
-                 "skNoneLeft1.json", "skNoneLeft2.json", "skNoneLeft3.json",
-                 "skNoneRight1.json", "skNoneRight2.json", "skNoneRight3.json"]
-    testX, testY = getdata(testNames, False)
+def loadTest(model, wgtPth='baselines/autoenc_basic/Weights/model_weights.pth', isAMASS = False, draw=False):
+    if (not isAMASS):
+        testNames = ["skFloorLeft.json", "skFloorRight.json", 
+                    "skNoneLeft1.json", "skNoneLeft2.json", "skNoneLeft3.json",
+                    "skNoneRight1.json", "skNoneRight2.json", "skNoneRight3.json"]
+        testX, testY = getdata(testNames, False)
+    else:
+        X, Y = getdataAMASS()
+        halfEnd = int(len(X)//2) # divide int train and test (currently by half)
+        end = len(X)
+        testX = X[halfEnd:end]
+        testY = Y[halfEnd:end]
+
+    model.load_state_dict(torch.load(wgtPth)) # load weights model
     testXt = torch.from_numpy(testX)
     testYt = torch.from_numpy(testY)
     test_loop(testXt, testYt, model, nn.L1Loss())
-    
+
+    if (draw): drawSkltns(testXt, testYt, model)
+
+# draw predicted and real skeleton in a single plot
+def drawComprtvSkltns(testXt, testYt, model):
+    with torch.no_grad(): # don't use graident otherwise can't call numpy
+        rawOut = model(testXt[0])
+    arrOut = rawOut.numpy()
+    arrOut = arrOut.reshape(15, 4, 3)
+    cmprtvSkltPlt(arrOut, testYt[0])
+
 # method for drawing skeleton sequences
-def drawSkltns(testXt, testYt):
+def drawSkltns(testXt, testYt, model):
     # Let's try to visualise one skeleton prediction
     with torch.no_grad(): # don't use graident otherwise can't call numpy
         rawOut = model(testXt[0])
@@ -131,8 +181,7 @@ def drawSkltns(testXt, testYt):
     arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
     skeletonPlot(arrOut, 5.0, "prediction")
 
-    with torch.no_grad(): # don't use graident otherwise can't call numpy
-        rawOut = model(testYt[0])
+    rawOut = testYt[0]
     arrOut = rawOut.numpy()
     arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
     skeletonPlot(arrOut, 5.0, "real")

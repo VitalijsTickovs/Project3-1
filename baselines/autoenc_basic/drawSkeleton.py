@@ -85,9 +85,57 @@ def skeletonPlot(skltnSq, step=1.0, title="default"):
                                                             # (!!!) limited to one color for all points
     plt.show()
 
-    def cmprtvSkltPlt():
-        pass
+# Create a single plot for comparing predicted and real skeleton sequences
+def cmprtvSkltPlt(skltnSq_P, skltnSq_R, step=1.0, title="default"):
+    # set color tuple
+    rgb1 =[1.0,0.0,0.0]
+    rgb2 =[0.0,1.0,0.0]
+    clrStp1 = rgb1[0]/((len(skltnSq_P)/step)) # how much to decrement by the redness
+    clrStp2 = rgb2[1]/((len(skltnSq_R)/step)) 
+
+
+    # create figure
+    plt.rcParams["figure.figsize"] = [7.50, 6.00] # size of window on mac
+    plt.rcParams["figure.autolayout"] = True
+    fig = plt.figure()
+    ax = fig.add_subplot(projection="3d")
+    ax.set_title(title)
+
+    # set color cycle for different plots
+    ptsNum = 0
+    boneNum = 3 # preset (can't be computed)
+    clrCycleLst1 = crtCycleArr(len(skltnSq_P), rgb1, clrStp1, step, ptsNum, boneNum)
+    clrCycleLst2 = crtCycleArr(len(skltnSq_R), rgb2, clrStp2, step, ptsNum, boneNum)  
+    
+
+    # iterate through time points for predicted skeleton sequence
+    ax.set_prop_cycle(cycler('color', clrCycleLst1))
+    drawSkeletonSeq(ax, skltnSq_P, step)
+
+    # similarly iterate through time points for real skeleton sequence
+    ax.set_prop_cycle(cycler('color', clrCycleLst2))
+    drawSkeletonSeq(ax, skltnSq_R, step)
+
+    plt.show()
         
+# sub-method of cmprtvSkltPlt. Allows to add to plot a single skeleton sequence
+def drawSkeletonSeq(ax, skltnSq, step):
+    # iterate through time points
+    for i in range(0,len(skltnSq),int(step)):
+        # extract coordinates
+        keyPts = skltnSq[i]
+        x = keyPts[:,0] # 2,7,14,26 => (2,7),(2,14),(2,26)
+        y = keyPts[:,1]
+        z = keyPts[:,2]
+
+        # create bones
+        boneTrpls = np.array([keyPts[[0,1],:], keyPts[[0,2],:], keyPts[[0,3],:]])
+
+        # make plot
+        for bone in boneTrpls:                               
+            ax.plot(bone[:,0], bone[:,1], bone[:,2])        # used to create a line between two points
+                                                            # (!!!) limited to one color for all points
+    
 
 if __name__ == "__main__":
     pass
