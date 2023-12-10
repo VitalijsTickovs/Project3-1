@@ -39,6 +39,37 @@ def intervalBreak(contents, start, stop, tm_wdw = 0.5):
         prev_i = intr_i
     return intervals
 
+# Method similar to intervalBreak, but this time created for AMASS dataset and not stereolabs dataset 
+# (e.g. difference in framerate, AMASS uses 60 fps)
+# 
+# Inputs:
+#   contents - skeleton measurments
+# Output:
+#   intervals - contains skeleton measurment per 0.5 second interval
+def intervalBreakAMASS(contents, tm_wdw = 0.5):
+    fps = (1.0/60.0)
+
+    ## Create array
+    intervals = []
+    measurments = []
+    prev_i=0
+
+    ## Fill array
+    timepoint = 0
+    for i in range(len(contents)): # iterate through columns
+        key_lst = contents[i]
+        
+        intr_i = int((timepoint)//tm_wdw)
+        if (prev_i==intr_i):
+            measurments.append(key_lst)
+        else:
+            intervals.append(measurments)
+            measurments=[]
+        timepoint += fps
+        prev_i = intr_i
+    return intervals
+
+
 # Method to select XX (default 15) time points from a given interval of points. Takes care 
 # of intervals non divisible by "tm_pts_num" by first selecting based on time step and if not enough 
 # then selecting random points not already selected.
@@ -119,7 +150,7 @@ def appendInstances2(X, Y, intervals, wdwSz =[4,4], tm_pts_num=15):
         Y.append(out_skltns) 
 
 # Method to extract relevant keypoints and remove the rest. By default extract 4 keypoints and 
-# ignore the rest ([2, 7, 14, 26]).
+# ignore the rest ([2, 7, 14, 26]) = (chest, leftArm, rightArm, head).
 # Bone pairs: (2,7), (2,14), (2,26)
 def filterKyPts(X, Y, slct_keys=[2, 7, 14, 26]):
     newX = X[:,:,slct_keys,:]
