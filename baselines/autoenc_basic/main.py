@@ -12,6 +12,7 @@ from model import train_loop
 from model import optimizationLoop
 from drawSkeleton import skeletonPlot
 from drawSkeleton import cmprtvSkltPlt
+from drawSkeleton import cmprtvSeqPlt
 
 # METHODS
 # Method to return an example tensor of correct shape for forward feed. Note random input values 
@@ -163,7 +164,16 @@ def loadTest(model, wgtPth='baselines/autoenc_basic/Weights/model_weights.pth', 
     test_loop(testXt, testYt, model, nn.L1Loss())
 
     #if (draw): drawSkltns(testXt, testYt, model)
-    if (draw): drawComprtvSkltns(testXt, testYt, model)
+    #if (draw): drawComprtvSkltns(testXt, testYt, model)
+    if (draw): drawCmprtvSeqPlt(testXt, testYt, model)
+
+
+def drawCmprtvSeqPlt(testXt, testYt, model):
+    with torch.no_grad(): # don't use graident otherwise can't call numpy
+        rawOut = model(testXt[0])
+    arrOut = rawOut.numpy()
+    arrOut = arrOut.reshape(15, 4, 3)
+    cmprtvSeqPlt(arrOut, testYt[0], 5.0)
 
 
 # draw predicted and real skeleton in a single plot

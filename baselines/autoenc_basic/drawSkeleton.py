@@ -15,9 +15,9 @@ def ex3DPlot(): # from https://www.tutorialspoint.com/connecting-two-points-on-a
     ax.plot(x, y, z, color='black') # used to create a line between two points
     plt.show()
 
-def singleSkeletonPlot(skltnSq):
+def singleSkeletonPlot(skltnSq, sqId = 0):
     # extract coordinates
-    keyPts = skltnSq[0]
+    keyPts = skltnSq[sqId]
     x = keyPts[:,0] # 2,7,14,26 => (2,7),(2,14),(2,26)
     y = keyPts[:,1]
     z = keyPts[:,2]
@@ -34,7 +34,6 @@ def singleSkeletonPlot(skltnSq):
     plt.rcParams["figure.autolayout"] = True
     fig = plt.figure()
     ax = fig.add_subplot(projection="3d")
-    ax.scatter(x, y, z, c='red', s=100)
     for bone in boneTrpls:
         ax.plot(bone[:,0], bone[:,1], bone[:,2], color='red') # used to create a line between two points
     plt.show()
@@ -120,6 +119,39 @@ def cmprtvSkltPlt(skltnSq_P, skltnSq_R, step=5.0, title="default"):
     drawSkeletonSeq(ax, skltnSq_R, step)
 
     plt.show()
+
+def cmprtvSeqPlt(skltnSq_P, skltnSq_R, step=5.0, title="compare sequence "):
+    # set color tuple
+    rgb1 =[1.0,0.0,0.0]
+    rgb2 =[0.0,1.0,0.0]
+
+    # create figure
+    plt.rcParams["figure.figsize"] = [7.50, 6.00] # size of window on mac
+    plt.rcParams["figure.autolayout"] = True
+    
+    for i in range(0,len(skltnSq_P),int(step)):
+        # plot basic set-up
+        fig = plt.figure()
+        ax = fig.add_subplot(projection="3d")
+        ax.set_xlabel('$X$', fontsize=20, rotation=150)
+        ax.set_ylabel('$Y$', fontsize=20)
+        ax.set_zlabel('$Z$', fontsize=20, rotation=60)
+        enumTitle = title + str(i)
+        ax.set_title(enumTitle)
+
+        # plot bones predicted
+        keyPts = skltnSq_P[i]
+        boneTrpls = np.array([keyPts[[0,1],:], keyPts[[0,2],:], keyPts[[0,3],:]])
+        for bone in boneTrpls:                               
+            ax.plot(bone[:,0], bone[:,1], bone[:,2], color = rgb1)
+
+        # plot bones real
+        keyPts = skltnSq_R[i]
+        boneTrpls = np.array([keyPts[[0,1],:], keyPts[[0,2],:], keyPts[[0,3],:]])
+        for bone in boneTrpls:                               
+            ax.plot(bone[:,0], bone[:,1], bone[:,2], color = rgb2)
+        
+        plt.show() # show plot by plot
         
 # sub-method of cmprtvSkltPlt. Allows to add to plot a single skeleton sequence
 def drawSkeletonSeq(ax, skltnSq, step):
