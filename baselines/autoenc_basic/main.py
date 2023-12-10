@@ -162,7 +162,9 @@ def loadTest(model, wgtPth='baselines/autoenc_basic/Weights/model_weights.pth', 
     testYt = torch.from_numpy(testY)
     test_loop(testXt, testYt, model, nn.L1Loss())
 
-    if (draw): drawSkltns(testXt, testYt, model)
+    #if (draw): drawSkltns(testXt, testYt, model)
+    if (draw): drawComprtvSkltns(testXt, testYt, model)
+
 
 # draw predicted and real skeleton in a single plot
 def drawComprtvSkltns(testXt, testYt, model):

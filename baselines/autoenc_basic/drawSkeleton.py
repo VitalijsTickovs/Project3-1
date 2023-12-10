@@ -40,12 +40,12 @@ def singleSkeletonPlot(skltnSq):
     plt.show()
     pass
 
-def crtCycleArr(cycles, rgb, stp, step, ptsNum, boneNum):
+def crtCycleArr(cycles, rgb, stp, step, ptsNum, boneNum, i_rgb=0):
     clrList = []
     for i in range(0, cycles, int(step)):
         for rep in range(ptsNum+boneNum):
             clrList.append(rgb.copy())
-        rgb[0] = rgb[0] - stp
+        rgb[i_rgb] = rgb[i_rgb] - stp
     return clrList
 
 
@@ -86,7 +86,7 @@ def skeletonPlot(skltnSq, step=1.0, title="default"):
     plt.show()
 
 # Create a single plot for comparing predicted and real skeleton sequences
-def cmprtvSkltPlt(skltnSq_P, skltnSq_R, step=1.0, title="default"):
+def cmprtvSkltPlt(skltnSq_P, skltnSq_R, step=5.0, title="default"):
     # set color tuple
     rgb1 =[1.0,0.0,0.0]
     rgb2 =[0.0,1.0,0.0]
@@ -100,12 +100,15 @@ def cmprtvSkltPlt(skltnSq_P, skltnSq_R, step=1.0, title="default"):
     fig = plt.figure()
     ax = fig.add_subplot(projection="3d")
     ax.set_title(title)
+    ax.set_xlabel('$X$', fontsize=20, rotation=150)
+    ax.set_ylabel('$Y$', fontsize=20)
+    ax.set_zlabel('$Z$', fontsize=20, rotation=60)
 
     # set color cycle for different plots
     ptsNum = 0
     boneNum = 3 # preset (can't be computed)
     clrCycleLst1 = crtCycleArr(len(skltnSq_P), rgb1, clrStp1, step, ptsNum, boneNum)
-    clrCycleLst2 = crtCycleArr(len(skltnSq_R), rgb2, clrStp2, step, ptsNum, boneNum)  
+    clrCycleLst2 = crtCycleArr(len(skltnSq_R), rgb2, clrStp2, step, ptsNum, boneNum, i_rgb=1)  
     
 
     # iterate through time points for predicted skeleton sequence
