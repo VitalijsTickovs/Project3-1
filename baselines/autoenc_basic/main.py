@@ -5,6 +5,7 @@ import time
 
 # Files:
 from dataset import getdata
+from dataset import getdataAMASS
 from model import ED_Network
 from model import test_loop
 from model import train_loop
@@ -80,6 +81,34 @@ def loadTrainTest(model):
     torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights.pth')
     
     drawSkltns(testXt, testYt)
+
+def loadTrainTestSplit(model, epochs = 60, isAMASS = True):
+    if (isAMASS):
+        X, Y = getdataAMASS() # get data based on json files in Data folder
+    
+    halfEnd = int(len(X)//2)
+    end = len(X)
+    X_train = X[0:(halfEnd-1)]
+    Y_train = Y[0:(halfEnd-1)]
+    X_test = X[halfEnd:end]
+    Y_test = Y[halfEnd:end]
+
+    Xt = torch.from_numpy(X_train) # convert to tensor 
+                                # only works on single instance hence X[0]
+    Yt = torch.from_numpy(Y_train)
+
+    lr = 0.05 # (lr, epochs) => (0.005; 60), (0.05, 10); 
+    optimizer = torch.optim.SGD(model.parameters(), lr)
+    loss_fn = nn.L1Loss()
+    optimizationLoop(Xt, Yt, model, loss_fn, optimizer, epochs)
+    
+    # Do a test on other data
+    testXt = torch.from_numpy(X_test)
+    testYt = torch.from_numpy(Y_test)
+    test_loop(testXt, testYt, model, nn.L1Loss())
+
+    # save model weights
+    torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth')
 
 
 # method which loads the saved weights and tests the model

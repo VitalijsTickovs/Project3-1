@@ -80,6 +80,10 @@ def selectTimePoints(slct_intrv, tm_pts_num=15):
     slct_idxs = list(range(0, len(slct_intrv), stp)) # range() in python 3 is an iterator object
     unslct_idxs = list(range(1, len(slct_intrv), stp))
 
+    # remove if too many
+    if len(slct_idxs)>tm_pts_num: slct_idxs = slct_idxs[:-1]
+
+    # add from unselected if no enough
     missing = tm_pts_num-len(slct_idxs)
     missing = missing if missing>0 else 0  
     slct_idxs.extend(np.random.choice(unslct_idxs, missing, replace=False)) # add leftovers determined randomly
@@ -241,7 +245,7 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
 # made for AMASS. For example: 
 # - 60 fps
 # - pickle file with skeleton data in a particular format must be available  
-def getDataAMASS(pklPath='baselines/autoenc_basic/experiment_phase2/data.obj'):
+def getdataAMASS(pklPath='baselines/autoenc_basic/experiment_phase2/data.obj', debug=False):
     # X array:
     #   Needs to contain 4*15*3 data points per line because 4 features * 15 different time points * 3 
     #   coordinates per feature. Order: features, x, time-point 1 -> features, y, time-point 1 -> 
@@ -257,7 +261,6 @@ def getDataAMASS(pklPath='baselines/autoenc_basic/experiment_phase2/data.obj'):
     fileObj.close()
 
     
-    fltr_annotations = []
     for i in range(len(annotations)):
         # 2. filter 4 relevant keypoints
         skltSeq = annotations[i]
@@ -271,18 +274,38 @@ def getDataAMASS(pklPath='baselines/autoenc_basic/experiment_phase2/data.obj'):
         tm_pts_num = 15
         appendInstances2(X, Y, intervals, [1,2], tm_pts_num)
     
+
+        # check if dimensions are correct
+    if (debug): 
+        print(len(X)) # this should be equal to value on the line above OR add up (if X non empty)
+        print(len(X[0])) # this should be 15
+        print(len(X[0][0])) # this should be 34
+        print(len(X[0][0][0])) # this should be 3
+        print(len(X[0][0][0][0])) # this should be 3
+        print()
+
+        print(len(Y)) # this should be equal to value on the line above OR add up (if Y non empty)
+        print(len(Y[0])) # this should be 15
+        print(len(Y[0][0])) # this should be 34
+        print(len(Y[0][0][0])) # this should be 3
+        print(len(Y[0][0][0][0])) # this should be 3
+        print()
+
     # check if same dimensions everywhere + convert to numpy
     Xdata = np.array(X).astype(np.float32) # python has only floats of different length (which are 
                                             # floats and doubles essentially speaking)
     Ydata = np.array(Y).astype(np.float32)
 
-    # Extract relevant key points of the skeleton
-    Xdata, Ydata = filterKyPts(Xdata, Ydata)
+    # remove unnecessary axis of size 1 (i.e. those containg only a single element)
+    #   there is one present from the AMASS dataset
+    Xdata = np.squeeze(Xdata)
+    Ydata = np.squeeze(Ydata)
+
 
     return Xdata, Ydata
 
 # MAIN:
 if __name__ == "__main__":
-    pass
+    getDataAMASS(debug=True)
 
 
