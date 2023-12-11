@@ -55,7 +55,7 @@ def train_loop(features, outputs, model, loss_fn, optimizer):
 
         if iter % 100 == 0:
             loss = loss.item()
-            print(f"loss: {loss:>7f}  [{iter:>5d}/{size:>5d}]")
+            #print(f"loss: {loss:>7f}  [{iter:>5d}/{size:>5d}]") # show loss every 100th instance
         iter+=1
 
 # features and outputs is a numpy array

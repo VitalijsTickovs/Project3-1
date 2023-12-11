@@ -245,7 +245,7 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
 # made for AMASS. For example: 
 # - 60 fps
 # - pickle file with skeleton data in a particular format must be available  
-def getdataAMASS(pklPath='baselines/autoenc_basic/experiment_phase2/data.obj', debug=False):
+def getdataAMASS(pklPath='baselines/autoenc_basic/experiment_phase2/data.obj', debug=False, wdw=[1,2]):
     # X array:
     #   Needs to contain 4*15*3 data points per line because 4 features * 15 different time points * 3 
     #   coordinates per feature. Order: features, x, time-point 1 -> features, y, time-point 1 -> 
@@ -272,7 +272,7 @@ def getdataAMASS(pklPath='baselines/autoenc_basic/experiment_phase2/data.obj', d
 
         # 4. Next take broken down data and select 15 time points adding them to create X and Y arrays
         tm_pts_num = 15
-        appendInstances2(X, Y, intervals, [1,2], tm_pts_num)
+        appendInstances2(X, Y, intervals, wdw, tm_pts_num)
     
 
         # check if dimensions are correct
