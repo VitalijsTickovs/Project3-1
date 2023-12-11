@@ -183,7 +183,7 @@ def initialize():
     y_pred = model.predict(X_test) 
     # print(y_pred)
 
-    # Evaluate loss
+    # Evaluate Prediction 
     l1_loss,cross_entropy_loss = model.evaluate_loss(y_pred, X_test)
     print("l1_loss:", l1_loss)
     print("cross_entropy_loss:", cross_entropy_loss)   
