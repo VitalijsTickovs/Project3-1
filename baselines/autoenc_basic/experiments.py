@@ -97,7 +97,8 @@ if __name__ == "__main__":
 #   - sk10.3 -> 0.297791 
 # Mean of last 6 points: 0.2929321667 
 # Distance from chin to sub-naseal area: 2.9 cm (see https://en.wikipedia.org/wiki/Human_head)
-# Length of neck: 8 cm (see https://www.researchgate.net/figure/Dimensions-of-Human-Neck-mm-18_tbl2_332686697#:~:text=The%20dimensions%20of%20the%20average,19%5D%2C%20%5B20%5D%20.)
+# Midline neck length: 8 cm (see https://www.researchgate.net/figure/Dimensions-of-Human-Neck-mm-18_tbl2_332686697#:~:text=The%20dimensions%20of%20the%20average,19%5D%2C%20%5B20%5D%20.
+#                               and https://www.researchgate.net/publication/273700390_Relationship_between_Neck_Length_Sleep_and_Cardiovascular_Risk_Factors#pf3 )
 # Base of neck to middle of chest: 9 cm (approximation)
 # Sum length: 19.9 cm
 # Mapping/conversion rate: 67.933 per 1 (cm per unit)
