@@ -114,7 +114,7 @@ def loadTrainTestSplit(model, epochs = 60, isAMASS = True, savePath='baselines/a
 
 def preloadTrainTest(model, epochs = 60, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth'):
     if (isAMASS):
-        X, Y = getdataAMASS(wdw=[1,2]) # get data based on json files in Data folder
+        X, Y = getdataAMASS(wdw=[1,4]) # get data based on json files in Data folder
     
     halfEnd = int(len(X)//2) # divide int train and test (currently by half)
     end = len(X)
@@ -201,7 +201,7 @@ def drawSkltns(testXt, testYt, model):
 # method for computing average forward propgation time (last measurment: 0.9092473983764648 ms)
 def avgFrwdPropTm(model, n = 100):
     sum = 0
-    model.load_state_dict(torch.load('baselines/autoenc_basic/Weights/model_weights.pth'))
+    model.load_state_dict(torch.load('baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o4.pth'))
     for i in range(n):
         X = torch.rand(3, 4, 15, device=device) # tensor with random numbers
         print(i)
