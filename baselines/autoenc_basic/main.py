@@ -86,7 +86,7 @@ def loadTrainTest(model):
 
 def loadTrainTestSplit(model, epochs = 60, isAMASS = True, savePath='baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth'):
     if (isAMASS):
-        X, Y = getdataAMASS(wdw=[1,4]) # get data based on json files in Data folder
+        X, Y = getdataAMASS(wdw=[1,6]) # get data based on json files in Data folder
     
     halfEnd = int(len(X)//2)
     end = len(X)
@@ -110,7 +110,7 @@ def loadTrainTestSplit(model, epochs = 60, isAMASS = True, savePath='baselines/a
     test_loop(testXt, testYt, model, nn.L1Loss())
 
     # save model weights
-    torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o4.pth')
+    torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o6.pth')
 
 def preloadTrainTest(model, epochs = 60, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth'):
     if (isAMASS):

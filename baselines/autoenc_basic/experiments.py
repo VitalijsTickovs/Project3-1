@@ -67,7 +67,7 @@ if __name__ == "__main__":
         print()
 
     # 1. redo training from scratch:
-    loadTrainTestSplit(model, epochs=10, savePath='baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o4.pth') 
+    loadTrainTestSplit(model, epochs=10, savePath='baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o6.pth') 
 
     # 2. load weights and do test:
     # loadTest(model, wgtPth='baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth', isAMASS=True, draw=True)
@@ -76,9 +76,9 @@ if __name__ == "__main__":
     # preloadTrainTest(model, epochs = 10, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth')
 
 # Training data
-# i1o2: 0.5 second in 1 second out 
+# i1o2: 0.5 second in 1 second out (L1 = 0.07...)
 # - 20 epochs
-# i1o4: 0.5 second in 2 second out 
-# - 10 epochs (10 epochs/ 6.5 minutes; hence 100 ep = 1 hour)
-# i1o6: 0.5 second in 3 second out 
-# - ??? epochs
+# i1o4: 0.5 second in 2 second out (L1 = 0.082967)
+# - 10 epochs (10 epochs/ 6.5 minutes; hence 100 ep = 1 hour) 
+# i1o6: 0.5 second in 3 second out (L1 = 0.086333)
+# - 10 epochs
