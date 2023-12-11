@@ -114,7 +114,7 @@ def loadTrainTestSplit(model, epochs = 60, isAMASS = True, savePath='baselines/a
 
 def preloadTrainTest(model, epochs = 60, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth'):
     if (isAMASS):
-        X, Y = getdataAMASS() # get data based on json files in Data folder
+        X, Y = getdataAMASS(wdw=[1,2]) # get data based on json files in Data folder
     
     halfEnd = int(len(X)//2) # divide int train and test (currently by half)
     end = len(X)

@@ -70,21 +70,21 @@ if __name__ == "__main__":
     # loadTrainTestSplit(model, epochs=10, savePath='baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o6.pth') 
 
     # 2. load weights and do test:
-    loadTest(model, wgtPth='baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o4.pth', isAMASS=True, draw=True)
+    # loadTest(model, wgtPth='baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o4.pth', isAMASS=True, draw=True)
 
     # 3. load weights and continue training:
-    # preloadTrainTest(model, epochs = 10, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth')
+    preloadTrainTest(model, epochs = 10, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o2.pth')
 
 # Training data
-# i1o2: 0.5 second in 1 second out (L1 = 0.07... | 4.75 cm)
-# - 20 epochs
+# i1o2: 0.5 second in 1 second out (L1 = 0.069842 | 4.74 cm)
+# - 30 epochs
 # i1o4: 0.5 second in 2 second out (L1 = 0.082967 | 5.64 cm)
 # - 10 epochs (10 epochs/ 6.5 minutes; hence 100 ep = 1 hour) 
 # i1o6: 0.5 second in 3 second out (L1 = 0.086333 | 5.86 cm)
 # - 10 epochs
 
 
-# Estimating distance
+# AMASS Estimating distance
 #   - (center chest point, head point below nose); i1o4
 #   - ([0.00103837, -0.02953809, 0.2974239], [0.01126073, -0.05810481, 0.55965173]) -> 0.263977
 #   - ([0.00720938, -0.0210958, 0.29842746] [0.01979808, -0.0516804, 0.5630473]) -> 0.266679
