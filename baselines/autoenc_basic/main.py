@@ -168,12 +168,12 @@ def loadTest(model, wgtPth='baselines/autoenc_basic/Weights/model_weights.pth', 
     if (draw): drawCmprtvSeqPlt(testXt, testYt, model)
 
 
-def drawCmprtvSeqPlt(testXt, testYt, model):
+def drawCmprtvSeqPlt(testXt, testYt, model, sk_id = 10):
     with torch.no_grad(): # don't use graident otherwise can't call numpy
-        rawOut = model(testXt[0])
+        rawOut = model(testXt[sk_id])
     arrOut = rawOut.numpy()
     arrOut = arrOut.reshape(15, 4, 3)
-    cmprtvSeqPlt(arrOut, testYt[0], 5.0)
+    cmprtvSeqPlt(arrOut, testYt[sk_id], 5.0)
 
 
 # draw predicted and real skeleton in a single plot

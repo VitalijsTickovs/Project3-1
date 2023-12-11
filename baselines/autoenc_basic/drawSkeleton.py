@@ -147,6 +147,7 @@ def cmprtvSeqPlt(skltnSq_P, skltnSq_R, step=5.0, title="compare sequence "):
 
         # plot bones real
         keyPts = skltnSq_R[i]
+        print(keyPts)
         boneTrpls = np.array([keyPts[[0,1],:], keyPts[[0,2],:], keyPts[[0,3],:]])
         for bone in boneTrpls:                               
             ax.plot(bone[:,0], bone[:,1], bone[:,2], color = rgb2)
