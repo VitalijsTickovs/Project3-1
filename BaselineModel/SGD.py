@@ -3,11 +3,13 @@
 # Then modified to fit our project
 import random
 from Skeleton_Dataset.load_datasetSGD import *
+from Skeleton_Dataset.normalize_datasetSGD import *
 import numpy as np
 import torch as tor
 from torch import nn
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import math as Math
 
 
 class SGD:
@@ -40,16 +42,19 @@ class SGD:
             if np.linalg.norm(grad) < self.tolerance_convergence:
                 break
 
+
     def gradient(self, X, y):
         n = len(y)
         y_pred = X * self.theta  # theta has to have the same dimensions as X with X being a random skeleton
         error = y_pred - y
         grad = (X * error) / n  # element-wise multiplication and sum along the first axis
         return grad
+    
 
     def predict(self, X):
         y_pred = X * self.theta  # element-wise multiplication
         return y_pred
+    
     
     def evaluate_loss(self, y_pred, X):
         random_index = random.randint(0, len(X)-2)
@@ -67,17 +72,33 @@ class SGD:
         
         return (l1_loss/34), (cross_entropy_loss/34)
     
+    
     def avrg_distance(self, y_pred, X):
         distances = []
         for i in range(len(y_pred)-1):
             prediction = y_pred[i]
             target = X[i+1]
-            manhattan_distance = (np.sum(np.abs(prediction-target)))/(34*3)
-            distances.append(manhattan_distance)
+            # Calculate euclidean distance between prediction and target
+            euclidean_distance = np.sqrt(np.sum((prediction - target)**2))/(34*3)
+            distances.append(euclidean_distance)
 
         # Get Average of distances
         avrg = np.mean(distances)
-        return avrg 
+        return avrg
+    
+
+    def convert_2_cm(self, avrg_distance, Skeleton): 
+        keypoint_2 = Skeleton[1][1]
+        keypoint_26 = Skeleton[25][1]
+
+        # Calculate euclidean distance between keypoint 2 axis y and 26 axis y 
+        euclidean_distance = Math.sqrt((keypoint_2 - keypoint_26)**2)
+
+        # Convert euclidean distance to cm
+        average_distance_cm = (avrg_distance * 19.9)/euclidean_distance
+
+        return average_distance_cm
+       
         
     def plot(self,Skeleton, Prediction_Skeleton):
         # Create a 3D axes
@@ -98,7 +119,7 @@ class SGD:
             y_pred.append(Prediction_Skeleton[i][1])
             z_pred.append(Prediction_Skeleton[i][2]) # For 3D plot
 
-        print(abs(Skeleton[0][0] - Prediction_Skeleton[0][0]))
+        print("absolute distance: ", abs(Skeleton[0][0] - Prediction_Skeleton[0][0]))
 
         ax.scatter(x_pred, y_pred, c='r', marker='x', label='Prediction Plot')
 
@@ -114,17 +135,21 @@ class SGD:
         # Display the plot
         plt.show()
 
+
     def load_weights(self, filename="SGD_model_weights.npy"):
         self.theta = np.load(filename)
         
+
     def save_weights(self, filename="SGD_model_weights.npy"):
         np.save(filename, self.theta)
         
+
 
 ## SGD MODEL INITIALIZATION ##
 def initialize():
     # Load & Preprocess data
     data = getdata()
+    data = normalize_data(data)
     # print ("no error in loading + preprocessing data")
 
     # Split data into training and testing 
@@ -147,7 +172,7 @@ def initialize():
     # print("no error in y declaration")
 
     # Create an instance of the SGD class
-    model = SGD(lr=0.001, max_iter=10000, batch_size=10, tol=1e-5) # change param if needed
+    model = SGD(lr=0.001, max_iter=1000, batch_size=32, tol=1e-3) # change param if needed
     # print("no error in model declaration")
 
     model.fit(X, y) 
@@ -160,11 +185,13 @@ def initialize():
 
     # Evaluate loss
     l1_loss,cross_entropy_loss = model.evaluate_loss(y_pred, X_test)
-    print(l1_loss)
-    print(cross_entropy_loss)   
+    print("l1_loss:", l1_loss)
+    print("cross_entropy_loss:", cross_entropy_loss)   
 
     # Evaluate average distance between predictions and all targets
-    print(model.avrg_distance(y_pred,X_test))
+    avrg_distance = model.avrg_distance(y_pred,X_test)
+    print("euclidean average distance: ", avrg_distance)
+    print("average distance in cm: ", model.convert_2_cm(avrg_distance, X_test[0])) # Second skeleton in test set
 
     # Plot prediction
     model.plot(X_test[1], y_pred[0]) # Second skeleton and First prediction
