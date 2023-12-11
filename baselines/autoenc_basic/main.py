@@ -114,7 +114,7 @@ def loadTrainTestSplit(model, epochs = 60, isAMASS = True, savePath='baselines/a
 
 def preloadTrainTest(model, epochs = 60, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth'):
     if (isAMASS):
-        X, Y = getdataAMASS(wdw=[1,4]) # get data based on json files in Data folder
+        X, Y = getdataAMASS(wdw=[1,6]) # get data based on json files in Data folder
     
     halfEnd = int(len(X)//2) # divide int train and test (currently by half)
     end = len(X)
@@ -204,7 +204,7 @@ def avgFrwdPropTm(model, n = 100):
     model.load_state_dict(torch.load('baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o4.pth'))
     for i in range(n):
         X = torch.rand(3, 4, 15, device=device) # tensor with random numbers
-        print(i)
+        #print(i)
         start_time = time.time()
         rawOut = model(X)
         sum += (time.time() - start_time)
@@ -234,4 +234,5 @@ if __name__ == "__main__":
         print()
 
     # space for execution of a method below
-    tmp = avgFrwdPropTm(model)
+    for i in range(5):
+        tmp = avgFrwdPropTm(model)

@@ -73,15 +73,15 @@ if __name__ == "__main__":
     # loadTest(model, wgtPth='baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o4.pth', isAMASS=True, draw=True)
 
     # 3. load weights and continue training:
-    preloadTrainTest(model, epochs = 30, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o4.pth')
+    preloadTrainTest(model, epochs = 30, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o6.pth')
 
 # Training data
 # i1o2: 0.5 second in 1 second out (L1 = 0.068842 | 4.68 cm)
 # - 40 epochs
 # i1o4: 0.5 second in 2 second out (L1 = 0.077767 | 5.28 cm)
 # - 40 epochs (10 epochs/ 6.5 minutes; hence 100 ep = 1 hour) 
-# i1o6: 0.5 second in 3 second out (L1 = 0.086333 | 5.86 cm)
-# - 10 epochs
+# i1o6: 0.5 second in 3 second out (L1 = 0.081051 | 5.51 cm)
+# - 40 epochs
 
 
 # AMASS Estimating distance
