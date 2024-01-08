@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 import pickle as pkl
+import copy
 
 # DESCRIPTION: 
 ## copy of file from visual.ipynb
@@ -39,6 +40,17 @@ def intervalBreak(contents, start, stop, tm_wdw = 0.5):
             measurments=[]
         prev_i = intr_i
     return intervals
+
+# Method to move all keypoints to a list without breaking skeletons into X second intervals  
+# Output:
+#   measurments - list of skeletons 
+def noBreak(contents):
+    measurments = []
+    for i in range(contents.shape[1]):
+        column = contents.iloc[:,i]
+        key_lst = column["body_list"][0]["keypoint"]
+        measurments.append(key_lst)
+    return measurments
 
 # Method similar to intervalBreak, but this time created for AMASS dataset and not stereolabs dataset 
 # (e.g. difference in framerate, AMASS uses 60 fps)
@@ -241,6 +253,63 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
 
     return Xdata, Ydata
 
+# Method to get data of single skeletons instead of skeleton sequences
+def getdataSS(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3.json", 
+                "skCrateRight1.json", "skCrateRight2.json", "skCrateRight3.json", 
+                "skCupLeft1.json", "skCupLeft2.json", "skCupLeft3.json",
+                "skCupRight1.json", "skCupRight2.json", "skCupRight3.json", 
+                "skFeederLeft1.json", "skFeederLeft2.json", "skFeederLeft3.json",
+                "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"], debug = True):
+    # X array:
+    #   Needs to contain 34*3 data points per line because 34 features * 3 
+    #   coordinates per feature. Order: features, x, time-point 1 -> features, y, time-point 1 -> 
+    #   features, z, time-point 1 -> features, x, time-point 2 -> ... .
+    # Y array:
+    #   Similar fashion, but this time it is for output and not input.
+
+    X = []
+    Y = []
+    # Read file. TODO: multiple names
+    
+    rlPth = "Data/SkeletonData/ShortIntervals/"
+    for name in namesList:
+        # 1. Read data
+        fullPath = rlPth+name
+        contents = pd.read_json(fullPath)
+
+        # 2. Drop the empty body_list columns
+        ## iterate and identify the drop names for columns
+        dropNames = []
+        for columnName, columnData in contents.items():
+            if (not (columnData["body_list"])): 
+                dropNames.extend([columnName])
+        contents = contents.drop(columns=dropNames)
+
+        # 3. Move skeleton measurments into a list
+        skeletons = noBreak(contents)
+        X.extend(skeletons)
+        Y.extend(copy.deepcopy(skeletons))
+
+
+        # check if dimensions are correct
+        if (debug): 
+            print(len(skeletons))
+            print(len(X)) # this should be equal to value on the line above OR add up (if X non empty)
+            print(len(X[0])) # this should be 34
+            print()
+
+            print(len(skeletons))
+            print(len(Y)) # this should be equal to value on the line above OR add up (if Y non empty)
+            print(len(Y[0])) # this should be 34
+            print()
+
+    # check if same dimensions everywhere + convert to numpy
+    Xdata = np.array(X).astype(np.float32) # python has only floats of different length (which are 
+                                            # floats and doubles essentially speaking)
+    Ydata = np.array(Y).astype(np.float32)
+
+    return Xdata, Ydata
+
 # method similar to getData but created specifically for AMASS dataset hence has changes and assumptions 
 # made for AMASS. For example: 
 # - 60 fps
@@ -306,6 +375,6 @@ def getdataAMASS(pklPath='baselines/autoenc_basic/experiment_phase2/data.obj', d
 
 # MAIN:
 if __name__ == "__main__":
-    getdata(debug=True)
+    getdataSS(debug=True)
 
 

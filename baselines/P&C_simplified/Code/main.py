@@ -4,8 +4,8 @@ from torch import nn
 import time
 
 # Files:
+from dataset import getdataSS
 from dataset import getdata
-from dataset import getdataAMASS
 from model import ED_Network
 from model import test_loop
 from model import train_loop
@@ -80,9 +80,8 @@ def loadTrainTest(model):
     torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights.pth')
     
 
-def loadTrainTestSplit(model, epochs = 60, isAMASS = True, savePath='baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth'):
-    if (isAMASS):
-        X, Y = getdataAMASS(wdw=[1,6]) # get data based on json files in Data folder
+def loadTrainTestSplit(model, epochs = 20, savePath='baselines/P&C_simplified/Weights/new.pth'):
+    X, Y = getdataSS(wdw=[1,6]) # get data based on json files in Data folder
     
     halfEnd = int(len(X)//2)
     end = len(X)
