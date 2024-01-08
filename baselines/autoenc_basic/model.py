@@ -36,7 +36,7 @@ class ED_Network(nn.Module): # inherit from nn.Module
 
 
 # Parameters:
-#   features - 2d array input motion [X moves][15 time pts][4 keypoints] e.g. { {{a1,b1,c1,d1}, {a2,b2,c2,d2}...},  ...}
+#   features - 4d array input motion [X moves][15 time pts][4 keypoints][3 coordinates] e.g. { {{a1,b1,c1,d1}, {a2,b2,c2,d2}...},  ...}
 #   output - 2d array output motion 
 def train_loop(features, outputs, model, loss_fn, optimizer):
     size = len(features) # number of instances
@@ -44,6 +44,7 @@ def train_loop(features, outputs, model, loss_fn, optimizer):
 
     iter = 0
     for mat in features:
+        tmp = mat.numpy()
         # Compute prediction and loss
         pred = model(mat)
         loss = loss_fn(pred, torch.flatten(outputs[iter]))

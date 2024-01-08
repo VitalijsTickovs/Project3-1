@@ -46,7 +46,7 @@ def exTestLoop():
 
     test_loop(Xt, Yt, model, nn.L1Loss())
 
-def exTrainLoop():
+def exTrainLoop(model):
     # example forward propagation of single instance
     X, Y = getdata() # get data based on json files in Data folder
     Xt = torch.from_numpy(X) # convert to tensor 
@@ -234,5 +234,6 @@ if __name__ == "__main__":
         print()
 
     # space for execution of a method below
-    for i in range(5):
-        tmp = avgFrwdPropTm(model)
+    exTrainLoop(model)
+        
+    
