@@ -14,18 +14,22 @@ class ED_Network(nn.Module): # inherit from nn.Module
         super().__init__()
         self.flatten = nn.Flatten(start_dim=0) # by default retains 1 dimension (start_dim=1) because wants to keep batches
         self.linear_relu_stack = nn.Sequential(
-            nn.Linear(34*3, 50), # 34 features * 3 coordinates per feature
+            nn.Linear(34*3, 90), # 34 features * 3 coordinates per feature
                                  #   features: left arm, right arm, head, spine point (ignoring the object coordinates for now)
             nn.ReLU(), # keep ReLU for now (lower computation) althoguh tempted to add LeakyReLU (dying neuron problem resolved)
-            nn.Linear(50, 40), # encoder_1 -> encoder_2
+            nn.Linear(90, 70), # encoder_1 -> encoder_2
             nn.ReLU(),
-            nn.Linear(40, 30), # encoder_2 -> code
+            nn.Linear(70, 50),
             nn.ReLU(),
-            nn.Linear(30, 40), # code -> decoder_1
+            nn.Linear(50, 30), # encoder_2 -> code
             nn.ReLU(),
-            nn.Linear(40, 50), # decoder_1 -> decoder_2
+            nn.Linear(30, 50),
             nn.ReLU(),
-            nn.Linear(50, 34*3), # decoder_2 -> output
+            nn.Linear(50, 70), # code -> decoder_1
+            nn.ReLU(),
+            nn.Linear(70, 90), # decoder_1 -> decoder_2
+            nn.ReLU(),
+            nn.Linear(90, 34*3), # decoder_2 -> output
         )
 
     def forward(self, x):
