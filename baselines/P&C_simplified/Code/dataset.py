@@ -3,6 +3,7 @@ import numpy as np
 from datetime import datetime, timedelta
 import pickle as pkl
 import copy
+from random import random
 
 # DESCRIPTION: 
 ## copy of file from visual.ipynb
@@ -177,6 +178,27 @@ def filterKyPts(X, Y, slct_keys=[2, 7, 14, 26]):
 
     return newX, newY
 
+# Normalise skeletons using the single coordinate point as tthe origin. 
+# Method created for getdataSS(...)
+# input: numpy array of skeletons
+# output: numpy array of skeletons
+def normSkels(skeletons, debug=False):
+    norm_skeletons = [] # to be filled and returned as output
+
+    for skel in skeletons:
+        keyPtNum = len(skel)
+        triple = skel[2]
+        norm_skeletons.append(np.subtract(skel, triple))
+        if(debug and random()<0.01): # print some, but not all to check whether norm works
+            print("_ _ _ _ _")
+            print(skel)
+            print()
+            print(np.subtract(skel, triple))
+            print("_________")
+
+    return np.array(norm_skeletons)
+
+
 
 # Method which is a copy of the code in MAIN section. Essentially outputs the X and Y created after going 
 # through all the training data.
@@ -307,6 +329,10 @@ def getdataSS(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLef
     Xdata = np.array(X).astype(np.float32) # python has only floats of different length (which are 
                                             # floats and doubles essentially speaking)
     Ydata = np.array(Y).astype(np.float32)
+
+    # normalise skeletons
+    Xdata = normSkels(Xdata)
+    Ydata = normSkels(Ydata)
 
     return Xdata, Ydata
 
