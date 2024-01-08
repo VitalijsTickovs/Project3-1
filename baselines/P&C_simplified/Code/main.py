@@ -8,6 +8,7 @@ from dataset import getdataSS
 from dataset import getdata
 from model import ED_Network
 from model import test_loop
+from model import test_loop2
 from model import train_loop
 from model import optimizationLoop
 
@@ -80,8 +81,8 @@ def loadTrainTest(model):
     torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights.pth')
     
 
-def loadTrainTestSplit(model, epochs = 20, savePath='baselines/P&C_simplified/Weights/new.pth'):
-    X, Y = getdataSS(wdw=[1,6]) # get data based on json files in Data folder
+def loadTrainTestSplit(model, epochs = 10, savePath='baselines/P&C_simplified/Weights/new.pth'):
+    X, Y = getdataSS() # get data based on json files in Data folder
     
     halfEnd = int(len(X)//2)
     end = len(X)
@@ -94,7 +95,7 @@ def loadTrainTestSplit(model, epochs = 20, savePath='baselines/P&C_simplified/We
                                 # only works on single instance hence X[0]
     Yt = torch.from_numpy(Y_train)
 
-    lr = 0.05 # (lr, epochs) => (0.005; 60), (0.05, 10); 
+    lr = 0.05 # (lr, epochs) => (0.05, 100) = 0.097419
     optimizer = torch.optim.SGD(model.parameters(), lr)
     loss_fn = nn.L1Loss()
     optimizationLoop(Xt, Yt, model, loss_fn, optimizer, epochs)
@@ -105,11 +106,10 @@ def loadTrainTestSplit(model, epochs = 20, savePath='baselines/P&C_simplified/We
     test_loop(testXt, testYt, model, nn.L1Loss())
 
     # save model weights
-    torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2_i1o6.pth')
+    torch.save(model.state_dict(), savePath)
 
-def preloadTrainTest(model, epochs = 60, isAMASS = True, wghtPth = 'baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth'):
-    if (isAMASS):
-        X, Y = getdataAMASS(wdw=[1,6]) # get data based on json files in Data folder
+def preloadTrainTest(model, epochs = 10, wghtPth = 'baselines/P&C_simplified/Weights/new.pth'):
+    X, Y = getdataSS() # get data based on json files in Data folder
     
     halfEnd = int(len(X)//2) # divide int train and test (currently by half)
     end = len(X)
@@ -125,7 +125,8 @@ def preloadTrainTest(model, epochs = 60, isAMASS = True, wghtPth = 'baselines/au
     # load model weights
     model.load_state_dict(torch.load(wghtPth))
 
-    lr = 0.05 # (lr, epochs) => (0.005; 60), (0.05, 10); 
+    lr = 0.0025 # (lr, epochs) => (0.0025, 20) = x>0.044 (training)
+
     optimizer = torch.optim.SGD(model.parameters(), lr)
     loss_fn = nn.L1Loss()
     optimizationLoop(Xt, Yt, model, loss_fn, optimizer, epochs)
@@ -140,24 +141,27 @@ def preloadTrainTest(model, epochs = 60, isAMASS = True, wghtPth = 'baselines/au
 
 
 # method which loads the saved weights and tests the model
-def loadTest(model, wgtPth='baselines/autoenc_basic/Weights/model_weights.pth', isAMASS = False, draw=False):
-    if (not isAMASS):
-        testNames = ["skFloorLeft.json", "skFloorRight.json", 
-                    "skNoneLeft1.json", "skNoneLeft2.json", "skNoneLeft3.json",
-                    "skNoneRight1.json", "skNoneRight2.json", "skNoneRight3.json"]
-        testX, testY = getdata(testNames, False)
-    else:
-        X, Y = getdataAMASS()
-        halfEnd = int(len(X)//2) # divide int train and test (currently by half)
-        end = len(X)
-        testX = X[halfEnd:end]
-        testY = Y[halfEnd:end]
+def loadTest(model, wgtPth='baselines/P&C_simplified/Weights/new.pth'):
+    testNames = ["skFloorLeft.json", "skFloorRight.json", 
+                "skNoneLeft1.json", "skNoneLeft2.json", "skNoneLeft3.json",
+                "skNoneRight1.json", "skNoneRight2.json", "skNoneRight3.json"]
+    testX, testY = getdataSS(testNames, False)
 
     model.load_state_dict(torch.load(wgtPth)) # load weights model
     testXt = torch.from_numpy(testX)
     testYt = torch.from_numpy(testY)
-    test_loop(testXt, testYt, model, nn.L1Loss())
+    test_loop2(testXt, testYt, model, nn.L1Loss(), 3)
 
+# random skeleton check (i.e. comparison of coordinates)
+def randSkelCheck(model, wgtPth="baselines/P&C_simplified/Weights/new.pth"):
+    testNames = ["skFloorLeft.json", "skFloorRight.json", 
+                    "skNoneLeft1.json", "skNoneLeft2.json", "skNoneLeft3.json",
+                    "skNoneRight1.json", "skNoneRight2.json", "skNoneRight3.json"]
+    testX, testY = getdata(testNames, False)
+    model.load_state_dict(torch.load(wgtPth)) # load weights model
+    testXt = torch.from_numpy(testX)
+    testYt = torch.from_numpy(testY)
+    test_loop(testXt, testYt, model, nn.L1Loss())
 
 
 # method for computing average forward propgation time (last measurment: 0.9092473983764648 ms)
@@ -196,4 +200,6 @@ if __name__ == "__main__":
         print()
 
     # space for execution of a method below
-    exFrwrdFd()
+    #loadTrainTestSplit(model, epochs=100)
+    #preloadTrainTest(model, epochs=20)
+    loadTest(model)

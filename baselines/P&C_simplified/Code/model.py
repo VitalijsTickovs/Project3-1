@@ -1,6 +1,8 @@
 import torch
 from torch import nn
 
+import numpy as np
+
 # Layer structure:
 #   in -> encoder_1 -> encoder_2 -> code -> decoder_1 -> decoder_2 -> out
 # - 2 layers for decoding and encoding
@@ -59,7 +61,7 @@ def train_loop(features, outputs, model, loss_fn, optimizer):
         iter+=1
 
 # features and outputs is a numpy array
-def test_loop(features, outputs, model, loss_fn):
+def test_loop(features, outputs, model, loss_fn, showSample=-1):
     model.eval() # evaluation mode
     av_loss = 0
 
@@ -71,11 +73,43 @@ def test_loop(features, outputs, model, loss_fn):
     av_loss /= (i+1)
     print(f"avereage MAE for all samples: {av_loss:>8f} \n")
 
+    if showSample!=-1:
+        torch.set_printoptions(sci_mode=False)
+        pred = model(features[showSample])
+        print(torch.reshape(pred,[34,3]))
+        print("\n")
+        print(outputs[showSample])
+
+# similar to original test loop, but made specially for P&C to calculate percentage wise error
+def test_loop2(features, outputs, model, loss_fn, showSample=-1):
+    model.eval()
+    av_loss = 0
+
+    with torch.no_grad(): # ensure less computation overhead by avoiding gradient computations
+        for i, mat in enumerate(features):
+            pred = model(mat)
+            num = loss_fn(pred, torch.flatten(outputs[i])).item() # flatten output to ensure they are the same
+            denom = abs(np.average(np.array(outputs[i])))
+            av_loss += (num/denom)
+
+    av_loss /= (i+1)
+    print(f"avereage relative MAE for all samples: {av_loss:>8f} \n")
+
+    if showSample!=-1:
+        torch.set_printoptions(sci_mode=False)
+        pred = model(features[showSample])
+        print(torch.reshape(pred,[34,3]))
+        print("\n")
+        print(outputs[showSample])
+
+
 def optimizationLoop(features, outputs, model, loss_fn, optimizer, epochs=10):
     for t in range(epochs):
         print(f"Epoch {t+1}\n-------------------------------")
         train_loop(features, outputs, model, loss_fn, optimizer)
         test_loop(features, outputs, model, loss_fn)
+
+
 ## MAIN
 
 
