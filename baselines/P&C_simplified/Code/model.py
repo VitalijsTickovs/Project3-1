@@ -36,8 +36,8 @@ class ED_Network(nn.Module): # inherit from nn.Module
 
 
 # Parameters:
-#   features - 2d array input motion [X moves][15 time pts][4 keypoints] e.g. { {{a1,b1,c1,d1}, {a2,b2,c2,d2}...},  ...}
-#   output - 2d array output motion 
+#   features - 2d array input skeleton [X skeletons][34 keypoints][3 coordinates]
+#   output - 2d array output skeleton (same as input) 
 def train_loop(features, outputs, model, loss_fn, optimizer):
     size = len(features) # number of instances
     model.train() # model in training mode
