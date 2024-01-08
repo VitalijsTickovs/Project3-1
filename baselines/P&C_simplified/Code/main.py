@@ -10,9 +10,6 @@ from model import ED_Network
 from model import test_loop
 from model import train_loop
 from model import optimizationLoop
-from drawSkeleton import skeletonPlot
-from drawSkeleton import cmprtvSkltPlt
-from drawSkeleton import cmprtvSeqPlt
 
 # METHODS
 # Method to return an example tensor of correct shape for forward feed. Note random input values 
@@ -82,7 +79,6 @@ def loadTrainTest(model):
     # save model weights
     torch.save(model.state_dict(), 'baselines/autoenc_basic/Weights/model_weights.pth')
     
-    drawSkltns(testXt, testYt)
 
 def loadTrainTestSplit(model, epochs = 60, isAMASS = True, savePath='baselines/autoenc_basic/Weights/model_weights_AMASS1o2.pth'):
     if (isAMASS):
@@ -163,40 +159,7 @@ def loadTest(model, wgtPth='baselines/autoenc_basic/Weights/model_weights.pth', 
     testYt = torch.from_numpy(testY)
     test_loop(testXt, testYt, model, nn.L1Loss())
 
-    #if (draw): drawSkltns(testXt, testYt, model)
-    #if (draw): drawComprtvSkltns(testXt, testYt, model)
-    if (draw): drawCmprtvSeqPlt(testXt, testYt, model)
 
-
-def drawCmprtvSeqPlt(testXt, testYt, model, sk_id = 10):
-    with torch.no_grad(): # don't use graident otherwise can't call numpy
-        rawOut = model(testXt[sk_id])
-    arrOut = rawOut.numpy()
-    arrOut = arrOut.reshape(15, 4, 3)
-    cmprtvSeqPlt(arrOut, testYt[sk_id], 5.0)
-
-
-# draw predicted and real skeleton in a single plot
-def drawComprtvSkltns(testXt, testYt, model):
-    with torch.no_grad(): # don't use graident otherwise can't call numpy
-        rawOut = model(testXt[0])
-    arrOut = rawOut.numpy()
-    arrOut = arrOut.reshape(15, 4, 3)
-    cmprtvSkltPlt(arrOut, testYt[0])
-
-# method for drawing skeleton sequences
-def drawSkltns(testXt, testYt, model):
-    # Let's try to visualise one skeleton prediction
-    with torch.no_grad(): # don't use graident otherwise can't call numpy
-        rawOut = model(testXt[0])
-    arrOut = rawOut.numpy()
-    arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
-    skeletonPlot(arrOut, 5.0, "prediction")
-
-    rawOut = testYt[0]
-    arrOut = rawOut.numpy()
-    arrOut = arrOut.reshape(15, 4, 3) # reshape single output into correct form
-    skeletonPlot(arrOut, 5.0, "real")
 
 # method for computing average forward propgation time (last measurment: 0.9092473983764648 ms)
 def avgFrwdPropTm(model, n = 100):

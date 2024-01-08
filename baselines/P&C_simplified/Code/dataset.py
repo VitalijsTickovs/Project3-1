@@ -306,6 +306,6 @@ def getdataAMASS(pklPath='baselines/autoenc_basic/experiment_phase2/data.obj', d
 
 # MAIN:
 if __name__ == "__main__":
-    getdataAMASS(debug=True)
+    getdata(debug=True)
 
 
