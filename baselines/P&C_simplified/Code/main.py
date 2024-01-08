@@ -15,7 +15,7 @@ from model import optimizationLoop
 # Method to return an example tensor of correct shape for forward feed. Note random input values 
 # are used. Differentiate between different ways to flatten.
 def exFrwrdFd():
-    Xt = torch.rand(15, 4, 3, device=device) # tensor with random numbers 
+    Xt = torch.rand(34, 3, device=device) # tensor with random numbers 
     print(Xt)
     m = nn.Flatten(start_dim=1)
     m2 = nn.Flatten(start_dim=0)
@@ -197,5 +197,4 @@ if __name__ == "__main__":
         print()
 
     # space for execution of a method below
-    for i in range(5):
-        tmp = avgFrwdPropTm(model)
+    exFrwrdFd()

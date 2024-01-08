@@ -175,7 +175,7 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
                 "skFeederLeft1.json", "skFeederLeft2.json", "skFeederLeft3.json",
                 "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"], debug = True):
     # X array:
-    #   Needs to contain 4*15*3 data points per line because 4 features * 15 different time points * 3 
+    #   Needs to contain 34*3 data points per line because 34 features * 3 
     #   coordinates per feature. Order: features, x, time-point 1 -> features, y, time-point 1 -> 
     #   features, z, time-point 1 -> features, x, time-point 2 -> ... .
     # Y array:
