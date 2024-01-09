@@ -201,5 +201,5 @@ if __name__ == "__main__":
 
     # space for execution of a method below
     #loadTrainTestSplit(model, epochs=60)
-    preloadTrainTest(model, epochs=100)
-    #loadTest(model)
+    #preloadTrainTest(model, epochs=300)
+    loadTest(model)
