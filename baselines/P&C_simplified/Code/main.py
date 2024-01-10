@@ -178,8 +178,14 @@ def avgFrwdPropTm(model, n = 100):
     print(rslt, "seconds or", rslt*1000, "ms")
     return rslt
 
-def getLatentMat(model, data):
-    return
+# instance needs to be tensor with shape (N, 34, 3)
+def innerLayer(model, inst, wgtPth='baselines/P&C_simplified/Weights/new.pth', debug=False):
+    model.load_state_dict(torch.load(wgtPth)) # load weights model
+    inst_t = torch.from_numpy(inst)
+    pred = model.latent_forward(inst_t)
+
+    if (debug): print(pred)
+    return pred
 
 # MAIN
 if __name__ == "__main__":
@@ -204,5 +210,7 @@ if __name__ == "__main__":
 
     # space for execution of a method below
     #loadTrainTestSplit(model, epochs=60)
-    preloadTrainTest(model, epochs=20)
+    #preloadTrainTest(model, epochs=20)
     #loadTest(model)
+    X,Y = getdataSS()
+    innerLayer(model, X[2], debug=True)

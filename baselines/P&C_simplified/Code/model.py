@@ -37,6 +37,18 @@ class ED_Network(nn.Module): # inherit from nn.Module
 
     def expFlat(self, data):
         return self.flatten(data)
+    
+    # get values of inner layer
+    def latent_forward(self, x):
+        x = self.flatten(x)
+        x = self.linear_relu_stack[0](x)
+        x = self.linear_relu_stack[1](x)
+        x = self.linear_relu_stack[2](x)
+        x = self.linear_relu_stack[3](x)
+        x = self.linear_relu_stack[4](x)
+        return x
+
+
 
 
 # Parameters:
