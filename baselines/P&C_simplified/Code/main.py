@@ -108,7 +108,7 @@ def loadTrainTestSplit(model, epochs = 10, savePath='baselines/P&C_simplified/We
     # save model weights
     torch.save(model.state_dict(), savePath)
 
-def preloadTrainTest(model, epochs = 10, wghtPth = 'baselines/P&C_simplified/Weights/nonNormalisedTraining/w_0576.pth'): # baselines/P&C_simplified/Weights/new.pth
+def preloadTrainTest(model, epochs = 10, wghtPth = 'baselines/P&C_simplified/Weights/new.pth'): #
     X, Y = getdataSS() # get data based on json files in Data folder
     
     halfEnd = int(len(X)//2) # divide int train and test (currently by half)
@@ -145,12 +145,12 @@ def loadTest(model, wgtPth='baselines/P&C_simplified/Weights/new.pth'):
     testNames = ["skFloorLeft.json", "skFloorRight.json", 
                 "skNoneLeft1.json", "skNoneLeft2.json", "skNoneLeft3.json",
                 "skNoneRight1.json", "skNoneRight2.json", "skNoneRight3.json"]
-    testX, testY = getdataSS(testNames, False)
+    testX, testY = getdataSS(testNames)
 
     model.load_state_dict(torch.load(wgtPth)) # load weights model
     testXt = torch.from_numpy(testX)
     testYt = torch.from_numpy(testY)
-    test_loop2(testXt, testYt, model, nn.L1Loss(), 3)
+    test_loop(testXt, testYt, model, nn.L1Loss(), 3)
 
 # random skeleton check (i.e. comparison of coordinates)
 def randSkelCheck(model, wgtPth="baselines/P&C_simplified/Weights/new.pth"):
@@ -178,6 +178,9 @@ def avgFrwdPropTm(model, n = 100):
     print(rslt, "seconds or", rslt*1000, "ms")
     return rslt
 
+def getLatentMat(model, data):
+    return
+
 # MAIN
 if __name__ == "__main__":
     # pre-setting procedure
@@ -201,5 +204,5 @@ if __name__ == "__main__":
 
     # space for execution of a method below
     #loadTrainTestSplit(model, epochs=60)
-    #preloadTrainTest(model, epochs=20)
-    loadTest(model)
+    preloadTrainTest(model, epochs=20)
+    #loadTest(model)

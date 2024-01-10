@@ -20,7 +20,7 @@ def kmeans(data):
     # radius -> size of the circle to consider as the neighbouhood
     km = KMeans(n_clusters=2, random_state=0, n_init="auto")
     cluster_labels = km.fit_predict(data)
-    silhouette_avg = silhouette_score(data, cluster_labels)
+    silhouette_avg = silhouette_score(data, cluster_labels) # https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html#examples-using-sklearn-metrics-silhouette-score
     return silhouette_avg
 
 # description:
@@ -29,7 +29,7 @@ def lblKnn(data):
     return
 
 # sklearn:
-#   cluster-distance distance for different datapoints to all the clusters 
+#   cluster-distance matrix for different datapoints to all the clusters 
 #   can use it to calculate the mean distance for each centroid
 
 # Main (for testing):
@@ -44,3 +44,7 @@ if __name__ == "__main__":
     data = np.array(data_f)
 
     print(kmeans(data))
+
+
+# Results so far:
+#   - silhouette - gives higher scores for larger cluster number

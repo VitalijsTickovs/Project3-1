@@ -280,7 +280,7 @@ def getdataSS(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLef
                 "skCupLeft1.json", "skCupLeft2.json", "skCupLeft3.json",
                 "skCupRight1.json", "skCupRight2.json", "skCupRight3.json", 
                 "skFeederLeft1.json", "skFeederLeft2.json", "skFeederLeft3.json",
-                "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"], rlPth = "Data/SkeletonData/ShortIntervals/", debug = True):
+                "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"], rlPth = "Data/SkeletonData/ShortIntervals/", debug = False):
     # X array:
     #   Needs to contain 34*3 data points per line because 34 features * 3 
     #   coordinates per feature. Order: features, x, time-point 1 -> features, y, time-point 1 -> 

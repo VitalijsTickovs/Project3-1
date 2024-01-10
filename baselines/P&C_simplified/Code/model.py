@@ -14,20 +14,21 @@ class ED_Network(nn.Module): # inherit from nn.Module
     def __init__(self): # initialise layers
         super().__init__()
         self.flatten = nn.Flatten(start_dim=0) # by default retains 1 dimension (start_dim=1) because wants to keep batches
-        self.linear_relu_stack = nn.Sequential(
-            nn.Linear(34*3, 50), # 34 features * 3 coordinates per feature
-                                 #   features: left arm, right arm, head, spine point (ignoring the object coordinates for now)
-            nn.ReLU(), # keep ReLU for now (lower computation) althoguh tempted to add LeakyReLU (dying neuron problem resolved)
-            nn.Linear(50, 40), # encoder_1 -> encoder_2
-            nn.ReLU(),
-            nn.Linear(40, 30),
-            nn.ReLU(),
-            nn.Linear(30, 40), # encoder_2 -> code
-            nn.ReLU(),
-            nn.Linear(40, 50),
-            nn.ReLU(),
-            nn.Linear(50, 34*3), # decoder_2 -> output
-        )
+        
+        self.linear_relu_stack = nn.Sequential()
+        self.linear_relu_stack.add_module("0", nn.Linear(34*3, 50)) # 34 features * 3 coordinates per feature
+                                                #   features: left arm, right arm, head, spine point (ignoring the object coordinates for now)
+        self.linear_relu_stack.add_module("0_a", nn.ReLU())  # keep ReLU for now (lower computation) althoguh tempted to add LeakyReLU (dying neuron problem resolved)
+        self.linear_relu_stack.add_module("2", nn.Linear(50, 40)) # encoder_1 -> encoder_2
+        self.linear_relu_stack.add_module("2_a", nn.ReLU())  
+        self.linear_relu_stack.add_module("4", nn.Linear(40, 30)) # latent space
+        self.linear_relu_stack.add_module("4_a", nn.ReLU())  
+        self.linear_relu_stack.add_module("6", nn.Linear(30, 40)) # encoder_2 -> code
+        self.linear_relu_stack.add_module("6_a", nn.ReLU())
+        self.linear_relu_stack.add_module("8", nn.Linear(40, 50))
+        self.linear_relu_stack.add_module("8_a", nn.ReLU())
+        self.linear_relu_stack.add_module("10", nn.Linear(50, 34*3)) # decoder_2 -> output
+
 
     def forward(self, x):
         x = self.flatten(x)
