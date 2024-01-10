@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 
+import sys
 import numpy as np
 
 # Layer structure:
@@ -89,7 +90,7 @@ def test_loop2(features, outputs, model, loss_fn, showSample=-1):
         for i, mat in enumerate(features):
             pred = model(mat)
             num = np.subtract(pred.numpy(), torch.flatten(outputs[i]).numpy()) # flatten output to ensure they are the same
-            perc_mat = np.divide(np.abs(num), torch.flatten(outputs[i]).numpy())
+            perc_mat = np.divide(np.abs(num), np.add(np.abs(torch.flatten(outputs[i]).numpy()), 0.0000000001))
             loss = np.mean(perc_mat)
             av_loss += loss
 

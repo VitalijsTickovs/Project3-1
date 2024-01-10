@@ -108,7 +108,7 @@ def loadTrainTestSplit(model, epochs = 10, savePath='baselines/P&C_simplified/We
     # save model weights
     torch.save(model.state_dict(), savePath)
 
-def preloadTrainTest(model, epochs = 10, wghtPth = 'baselines/P&C_simplified/Weights/new.pth'):
+def preloadTrainTest(model, epochs = 10, wghtPth = 'baselines/P&C_simplified/Weights/nonNormalisedTraining/w_0576.pth'): # baselines/P&C_simplified/Weights/new.pth
     X, Y = getdataSS() # get data based on json files in Data folder
     
     halfEnd = int(len(X)//2) # divide int train and test (currently by half)
@@ -201,5 +201,5 @@ if __name__ == "__main__":
 
     # space for execution of a method below
     #loadTrainTestSplit(model, epochs=60)
-    #preloadTrainTest(model, epochs=300)
+    #preloadTrainTest(model, epochs=20)
     loadTest(model)
