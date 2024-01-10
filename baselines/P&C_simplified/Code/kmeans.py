@@ -5,6 +5,8 @@ import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
+from dataset import getdataSS
+
 # METHODS:
 
 # description: 
@@ -32,5 +34,13 @@ def lblKnn(data):
 
 # Main (for testing):
 if __name__ == "__main__":
-    
+    data, _ = getdataSS(["bodies_1.json", "bodies_2.json", "bodies_3.json", 
+                         "bodies_4.json", "bodies_5.json", "bodies_6.json"], "Data/SkeletonData/2Poses/")
+    # flatten data
+    data_f = []
+    for row in data:
+        data_f.append(row.flatten())
+
+    data = np.array(data_f)
+
     print(kmeans(data))

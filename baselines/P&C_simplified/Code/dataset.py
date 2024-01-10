@@ -207,7 +207,7 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
                 "skCupLeft1.json", "skCupLeft2.json", "skCupLeft3.json",
                 "skCupRight1.json", "skCupRight2.json", "skCupRight3.json", 
                 "skFeederLeft1.json", "skFeederLeft2.json", "skFeederLeft3.json",
-                "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"], debug = True):
+                "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"], rlPth = "Data/SkeletonData/ShortIntervals/", debug = True):
     # X array:
     #   Needs to contain 34*3 data points per line because 34 features * 3 
     #   coordinates per feature. Order: features, x, time-point 1 -> features, y, time-point 1 -> 
@@ -219,7 +219,6 @@ def getdata(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLeft3
     Y = []
     # Read file. TODO: multiple names
     
-    rlPth = "Data/SkeletonData/ShortIntervals/"
     for name in namesList:
         # 1. Read data
         fullPath = rlPth+name
@@ -281,7 +280,7 @@ def getdataSS(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLef
                 "skCupLeft1.json", "skCupLeft2.json", "skCupLeft3.json",
                 "skCupRight1.json", "skCupRight2.json", "skCupRight3.json", 
                 "skFeederLeft1.json", "skFeederLeft2.json", "skFeederLeft3.json",
-                "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"], debug = True):
+                "skFeederRight1.json", "skFeederRight2.json", "skFeederRight3.json"], rlPth = "Data/SkeletonData/ShortIntervals/", debug = True):
     # X array:
     #   Needs to contain 34*3 data points per line because 34 features * 3 
     #   coordinates per feature. Order: features, x, time-point 1 -> features, y, time-point 1 -> 
@@ -293,7 +292,6 @@ def getdataSS(namesList = ["skCrateLeft1.json", "skCrateLeft2.json", "skCrateLef
     Y = []
     # Read file. TODO: multiple names
     
-    rlPth = "Data/SkeletonData/ShortIntervals/"
     for name in namesList:
         # 1. Read data
         fullPath = rlPth+name
