@@ -178,20 +178,16 @@ def avgFrwdPropTm(model, n = 100):
     print(rslt, "seconds or", rslt*1000, "ms")
     return rslt
 
-# instance needs to be tensor with shape (N, 34, 3)
+# 'inst' needs to be tensor with shape (34, 3)
 def innerLayer(model, inst, wgtPth='baselines/P&C_simplified/Weights/new.pth', debug=False):
     model.load_state_dict(torch.load(wgtPth)) # load weights model
     inst_t = torch.from_numpy(inst)
     pred = model.latent_forward(inst_t)
 
     if (debug): print(pred)
-    return pred
+    return pred.detach().numpy()
 
-# MAIN
-if __name__ == "__main__":
-    # pre-setting procedure
-    full_debug = True
-
+def modelSetup(full_debug=True):
     device = (
         "cuda"
         if torch.cuda.is_available()
@@ -207,7 +203,13 @@ if __name__ == "__main__":
 
         print(model)
         print()
+    return model
 
+# MAIN
+if __name__ == "__main__":
+    # pre-setting procedure
+    model = modelSetup()
+    
     # space for execution of a method below
     #loadTrainTestSplit(model, epochs=60)
     #preloadTrainTest(model, epochs=20)
