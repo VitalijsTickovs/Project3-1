@@ -4,3 +4,5 @@ track/fish.mov
 __pycache__\
 *.DS_Store
 Data
+local_env/videos
+baselines/autoenc_basic/experiment_phase2/data.obj
