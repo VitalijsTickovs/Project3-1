@@ -7,7 +7,7 @@ def runTrack(option, pathToFile=None):
         results = model.track(source=pathToFile, show=True, tracker="bytetrack.yaml")
     # running inference on video stream
     else: # option == 1:
-        results = model.track(source=0, show=True, tracker="bytetrack.yaml")
+        results = model.track(source=0, show=True, tracker="bytetrack.yaml", conf=0.2)
 
 
 # loading pre-trained model saved at pt
