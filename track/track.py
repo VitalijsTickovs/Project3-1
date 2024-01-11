@@ -4,7 +4,7 @@ from ultralytics import YOLO
 def runTrack(option, pathToFile=None):
     # running inference on file
     if option == 1:
-        results = model.track(source=pathToFile, show=True, tracker="bytetrack.yaml")
+        results = model.track(source=pathToFile, show=True, tracker="bytetrack.yaml", conf=0.2)
     # running inference on video stream
     else: # option == 1:
         results = model.track(source=0, show=True, tracker="bytetrack.yaml", conf=0.2)
@@ -13,5 +13,5 @@ def runTrack(option, pathToFile=None):
 # loading pre-trained model saved at pt
 model = YOLO('track/Weights/last.pt')
 
-runTrack(0)
+runTrack(1, pathToFile="local_env/videos/video.mp4")
 
