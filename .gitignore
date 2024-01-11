@@ -3,3 +3,4 @@ local_env/dataset
 *.DS_Store
 Data
 *.mp4
+baselines/autoenc_basic/experiment_phase2/data.obj
