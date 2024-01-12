@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 def initGraph(input):
     G = nx.DiGraph()
     G.add_node("root", name=None, pos=None, size=None, prob=None)
-
     # append root to queue
     allPoss = list(itertools.permutations(input))
 
@@ -16,20 +15,34 @@ def initGraph(input):
         for objTup in pos:
             # get reference for this node
             ref = objTup[0]+str(objTup[1][0])+str(objTup[1][1])+str(objTup[1][2])+"_"+str(prev_ref)
-
+            # foundEqls = False
+            # for n in G.nodes:
+            #     if checkEq(n, ref):
+            #         G.add_edge(prev_ref, n)
+            #         foundEqls = True
+            #         prev_ref = n
+            edges_to_add = []
             foundEqls = False
-            for n in G:
+            for n in G.nodes:
                 if checkEq(n, ref):
-                    G.add_edge(prev_ref, n)
+                    edges_to_add.append((prev_ref, n))
                     foundEqls = True
                     prev_ref = n
-            # add node if not already added
+
+
+            # Add all the new edges after iterating through the nodes
+            for edge in edges_to_add:
+                G.add_edge(*edge)
+                # add node if not already added
             if (not foundEqls and not G.has_node(ref)):
                 G.add_node(ref, name=objTup[0], pos=objTup[1], size = objTup[2])
                 G.add_edge(prev_ref, ref)
             
             # add edge
                 prev_ref = ref
+            if(G.has_node(ref)):
+                prev_ref = ref
+            
     return G
 
 def checkEq(nd1, nd2):
