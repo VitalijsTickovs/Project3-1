@@ -32,11 +32,11 @@ def initGraph(input):
 
             # Add all the new edges after iterating through the nodes
             for edge in edges_to_add:
-                G.add_edge(*edge)
+                G.add_edge(*edge, weight=0.5)
                 # add node if not already added
             if (not foundEqls and not G.has_node(ref)):
                 G.add_node(ref, name=objTup[0], pos=objTup[1], size = objTup[2])
-                G.add_edge(prev_ref, ref)
+                G.add_edge(prev_ref, ref, weight=1)
             
             # add edge
                 prev_ref = ref
@@ -104,8 +104,20 @@ class TreeNode:
 
 if __name__ == "__main__":
     configuration = [("Cup", (0,0,0), (1,1)), 
-                     ("Crate", (-3,1,5), (3,3)),
-                     ("Feeder", (9,9,9), (8,8))]
+                     ("Crate", (1,1,1), (3,3)),
+                     ("Feeder", (2,2,2), (8,8)),
+                     ("Cup", (3,3,3), (1,1))]
+    
     graph = initGraph(configuration)
-    nx.draw_planar(graph, with_labels = True, font_size=10)
+
+    # Draw the graph with edge labels
+    pos = nx.spring_layout(graph)
+
+    nx.draw(graph, pos, with_labels=True, font_size=10, font_color="black", font_weight="bold", arrowsize=20)
+
+    # Add edge labels
+    labels = nx.get_edge_attributes(graph, 'weight')
+    nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
+
     plt.savefig("graph_vis.png")
+    plt.show()
