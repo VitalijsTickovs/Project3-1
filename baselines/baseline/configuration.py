@@ -16,7 +16,7 @@ class Configuration():
             prev_ref = "root" # keep track of the previous reference to add edges
             for objTup in pos:
                 # get reference for this node
-                ref = objTup[0]+objTup[1]+"_"+str(prev_ref)
+                ref = objTup[0]+str(objTup[1][0])+str(objTup[1][1])+str(objTup[1][2])+"_"+str(prev_ref)
 
                 edges_to_add = []
                 foundEqls = False
@@ -61,9 +61,9 @@ class Configuration():
 
 
 if __name__ == "__main__":
-    configuration = [("Cup0", "N" ),
-                         ("Crate0", "NW"),
-                         ("Feeder0", "S")]
+    configuration = [("Cup", (0,0,0), (1,1)),
+                         ("Crate", (1,1,1), (2,2)),
+                         ("Feeder", (2,2,2), (1,2))]
     graph = Configuration()
     graph.initGraph(configuration)
     graph.assign_probs()
