@@ -15,12 +15,7 @@ def initGraph(input):
         for objTup in pos:
             # get reference for this node
             ref = objTup[0]+str(objTup[1][0])+str(objTup[1][1])+str(objTup[1][2])+"_"+str(prev_ref)
-            # foundEqls = False
-            # for n in G.nodes:
-            #     if checkEq(n, ref):
-            #         G.add_edge(prev_ref, n)
-            #         foundEqls = True
-            #         prev_ref = n
+
             edges_to_add = []
             foundEqls = False
             for n in G.nodes:
@@ -32,11 +27,11 @@ def initGraph(input):
 
             # Add all the new edges after iterating through the nodes
             for edge in edges_to_add:
-                G.add_edge(*edge, weight=0.5)
+                G.add_edge(*edge, weight=0.0)
                 # add node if not already added
             if (not foundEqls and not G.has_node(ref)):
                 G.add_node(ref, name=objTup[0], pos=objTup[1], size = objTup[2])
-                G.add_edge(prev_ref, ref, weight=1)
+                G.add_edge(prev_ref, ref, weight=0.0)
             
             # add edge
                 prev_ref = ref
@@ -51,65 +46,21 @@ def checkEq(nd1, nd2):
 
     return (nd1!=nd2) and (splt1 == splt2)
 
-class Tree:
-    def __init__(self, input):
-        self.root = TreeNode(None, None)
-        self.levels = [[]]*len(input+1)
+def assign_probs(G):
+    for node in G.nodes:
+        edges = G.out_edges([node])
+        for edge in edges:
+            nx.set_edge_attributes(G, {edge:{"weight": 1/len(edges)}})
 
-        # append root to queue
-        allPoss = list(itertools.permutations(input))
-        self.levels[0].append(self.root)
-
-        for pos in allPoss: # iterate through possibilities
-            previousNode = self.root
-            lvl = 1
-            for objTup in pos:
-                newNode = TreeNode(objTup, previousNode)
-                self.levels[lvl].append(newNode)
-                previousNode = newNode
-
-
-class TreeNode:
-    """A basic tree node class."""
-    def __init__(self, tuple_in, parent): # for standard node
-        if (parent!= None):
-            self.name = tuple_in[0]
-            self.pos = tuple_in[1] #tuple
-            self.size = tuple_in[2] #tuple
-        else:
-            self.name = None
-            self.pos = None
-            self.size = None
-        self.prob = 0
-        self.children = []
-
-        self.parent = parent # if 'None' then root
-
-    def add_child(self, child_node):
-        """Adds a child to this node."""
-        self.children.append(child_node)
-
-    def remove_child(self, child_node):
-        """Removes a child from this node."""
-        self.children = [child for child in self.children if child != child_node]
-
-    def traverse(self):
-        """Traverses the tree starting from this node."""
-        nodes = [self]
-        while nodes:
-            current_node = nodes.pop()
-            print(current_node.value)
-            nodes.extend(current_node.children)
 
 
 if __name__ == "__main__":
-    configuration = [("Cup", (0,0,0), (1,1)), 
+    configuration = [("Cup", (0,0,0), (1,1)),
                      ("Crate", (1,1,1), (3,3)),
-                     ("Feeder", (2,2,2), (8,8)),
-                     ("Cup", (3,3,3), (1,1))]
-    
-    graph = initGraph(configuration)
+                     ("Feeder", (2,2,2), (8,8))]
 
+    graph = initGraph(configuration)
+    assign_probs(graph)
     # Draw the graph with edge labels
     pos = nx.spring_layout(graph, scale=3)
 
