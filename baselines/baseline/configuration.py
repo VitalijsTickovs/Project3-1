@@ -111,7 +111,7 @@ if __name__ == "__main__":
     graph = initGraph(configuration)
 
     # Draw the graph with edge labels
-    pos = nx.spring_layout(graph)
+    pos = nx.spring_layout(graph, scale=3)
 
     nx.draw(graph, pos, with_labels=True, font_size=10, font_color="black", font_weight="bold", arrowsize=20)
 
