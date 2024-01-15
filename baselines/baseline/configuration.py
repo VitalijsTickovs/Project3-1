@@ -50,7 +50,7 @@ def assign_probs(G):
     for node in G.nodes:
         edges = G.out_edges([node])
         for edge in edges:
-            nx.set_edge_attributes(G, {edge:{"weight": 1/len(edges)}})
+            nx.set_edge_attributes(G, {edge:{"weight": round(1/len(edges), 3)}})
 
 
 
