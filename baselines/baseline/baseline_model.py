@@ -28,7 +28,7 @@ class BaselineModel:
 
         return (nd1!=nd2) and (splt1 == splt2)
 
-    def yolo_prediction(self, node):
+    def yolo_predict(self, node):
         prediction = self.predict(node)
         return prediction
 
