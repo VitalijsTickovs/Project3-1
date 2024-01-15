@@ -8,7 +8,7 @@ class Configuration():
         self.G = None
     def initGraph(self, input):
         G = nx.DiGraph()
-        G.add_node("root", name=None, pos=None, size=None, prob=None)
+        G.add_node("root", name=None, pos=None, prob=None)
         # append root to queue
         allPoss = list(itertools.permutations(input))
 
@@ -61,10 +61,10 @@ class Configuration():
 
 
 if __name__ == "__main__":
-    configuration = [("Cup", (0,0,0), (1,1)),
-                     ("Crate", (1,1,1), (3,3)),
-                     ("Feeder", (2,2,2), (8,8)),
-                     ("Gold", (0, 0, 0), (1, 1))]
+    configuration = [("Cup", (0,0,0)),
+                     ("Crate", (1,1,1)),
+                     ("Feeder", (2,2,2)),
+                     ("Gold", (0, 0, 0))]
     graph = Configuration()
     graph.initGraph(configuration)
     graph.assign_probs()
