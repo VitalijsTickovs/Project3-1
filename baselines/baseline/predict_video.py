@@ -70,6 +70,8 @@ class MultiModelDetector:
         return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
     def compute_quadrant(self, bounding_box):
+        ## TODO : CHANGE COORDINATE SYSTEM
+        ### ROUND THE OBJECT TO CLOSEST POSSIBLE CONFGURATION
         global center_x, center_y
         object_center_x = ((bounding_box[2][0] - bounding_box[0][0]) / 2) - center_x
         object_center_y = ((bounding_box[2][1] - bounding_box[0][1]) / 2) - center_y
