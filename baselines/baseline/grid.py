@@ -29,14 +29,16 @@ class Grid:
             for shift_tup in self.shift: # if there are multiple shifts because of multiple possiibilities then check all
                 estimated_pos = (object_center_x-shift_tup[0], object_center_y-shift_tup[1])
                 
+                distances2 = [] # distances for different shifts (corresponding to 'config_placements')
                 for obj_tup in configr: # check for the closest viable position 
-                    distances = []
-                    possibilities = []
+                    distances = [] # distances for different potential objects (multiple objects)
+                    possibilities = [] # possible 'quadrant'
                     if (type == obj_tup[0]):
                         possibilities.append((obj_tup[1][0], obj_tup[1][1]))
                         distances.append(math.sqrt(pow(obj_tup[1][0]-estimated_pos[0]) + pow(obj_tup[1][1]-estimated_pos[1])))
-                    
-                config_placements.append(possibilities[pd.Series(distances).idxmin()]) # get the closest viable position in the configuration coordinate system       
-        
+                distances2.append(possibilities[pd.Series(distances).min()])
+                config_placements.append(possibilities[pd.Series(distances).idxmin()]) # get the closest viable position in the configuration coordinate system   
+
+            config_placements = [config_placements[pd.Series(distances2).idxmin()]] # select the closest one (TODO: replace with selecting multiple based on threshold)
         self.objsPlcd.append(type)
         return config_placements
