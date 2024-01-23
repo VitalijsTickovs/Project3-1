@@ -11,7 +11,7 @@ def runTrack(option, pathToFile=None):
 
 
 # loading pre-trained model saved at pt
-model = YOLO('track/Weights/last.pt')
+model = YOLO('track/Weights/new_label_train/best.pt')
 
-runTrack(1, pathToFile="local_env/videos/video.mp4")
+runTrack(1, pathToFile="local_env/videos/angeledVideo.mp4")
 
