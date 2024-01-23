@@ -8,7 +8,7 @@ import math as Math
 
 
 class BaselineModel:
-    def __init__(self, configuration=None, G=None, known_objects=None):
+    def __init__(self, G=None, configuration=None, known_objects=None):
         self.G = G
         self.configuration = configuration
         self.yolo_node = "root"
@@ -214,17 +214,16 @@ class BaselineModel:
 
 
 if __name__ == "__main__":
-    configuration = [("Cup", (0, 0, 0), (1, 1)),
-                     ("Crate", (1, 1, 1), (3, 3)),
-                     ("Feeder", (2, 2, 2), (8, 8)),
-                     ("Gold", (0, 0, 0), (1, 1))]
+    configuration = [("Cup", (0), ("-1", "-1", "Crate0", "-1")),
+                     ("Crate", (0), ("Cup0", "-1", "Cup1", "-1")),
+                     ("Cup", (1), ("Crate0", "-1", "-1", "-1"))]
     graph = Configuration()
     graph.initGraph(configuration)
     # graph.assign_probs() # used for baseline
     graph.set_id(0)
     graph.assign_bayesian_probs()
 
-    baseline_model = BaselineModel(graph.get_graph(), configuration)
+    baseline_model = BaselineModel(graph.get_graph(), graph)
     # print(baseline_model.predict("Cup000_root"))
     print(baseline_model.make_predictions(
         ["root", "Crate111_root", "Gold000_Crate111_root", "Gold000_Crate111_Cup000_root",

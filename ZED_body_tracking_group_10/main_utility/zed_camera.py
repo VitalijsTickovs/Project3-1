@@ -1,4 +1,9 @@
+from time import sleep
+
 from Zed_Data_Extraction.record_skeleton_data import serializeBodies
+import numpy as np
+import cv2
+import main_utility.tracking_viewer as cv_viewer
 
 class ZedCamera:
     def __init__(self, sl):
@@ -132,7 +137,7 @@ class ZedCamera:
         return output
 
     # converts detections from YOLO to ZED SDK CustomBox format
-    def detections_to_custom_box(self, detections, im0, names):
+    def detections_to_custom_box(self, detections, im0, names, sl):
         output = []
         for i, det in enumerate(detections):
             xywh = det.xywh[0]
@@ -162,7 +167,7 @@ class ZedCamera:
     def close_camera(self):
         self.zed.close()
 
-    def retrieve_display_data(self):
+    def retrieve_display_data(self, sl):
         self.zed.retrieve_measure(self.point_cloud, sl.MEASURE.XYZRGBA, sl.MEM.CPU,
                                   self.point_cloud_res)  # update point cloud
         self.zed.retrieve_image(self.image_left, sl.VIEW.LEFT, sl.MEM.CPU, self.display_resolution)

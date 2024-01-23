@@ -11,7 +11,7 @@ import os
 print(os.getcwd())
 
 
-with open(r'ZED_body_tracking_group_10\Bayesian_Network\models\recent.pkl', 'rb') as file:
+with open('/home/kamil/PycharmProjects/Project3-1_WORKING_ZED/ZED_body_tracking_group_10/Bayesian_Network/models/recent.pkl', 'rb') as file:
     model = pickle.load(file)
     assert model.check_model()
     inference = VariableElimination(model)

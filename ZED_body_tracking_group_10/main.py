@@ -391,7 +391,8 @@ if __name__ == '__main__':
              ("Cup", (1), ("Feeder0", "-1", "-1", "-1"))]
     config = graph_configuration.Configuration()
     config.initGraph(graph)
-    config.assign_probs()
+    config.set_id(0)
+    config.assign_bayesian_probs()
 
     baseline_model = baseline_model.BaselineModel(config, config.get_graph(), graph)
 
