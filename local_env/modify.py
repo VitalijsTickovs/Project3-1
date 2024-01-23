@@ -10,8 +10,8 @@ def process_txt_file(file_path):
     for line in lines:
         if line.startswith('1 '):
             modified_lines.append('2 ' + line[2:])
-        elif line.startswith('2 '):
-            modified_lines.append('1 ' + line[2:])
+        # elif line.startswith('1 '):
+        #     modified_lines.append('2 ' + line[2:])
         else:
             modified_lines.append(line)
 
@@ -30,7 +30,9 @@ def process_folder(folder_path):
 
 if __name__ == "__main__":
     # Specify the path to the folder containing the .txt files
-    folder_path = 'C:\School\dataset\\test'.replace('\\', '/')
+    folder_path = 'C:\School\dataset\pre\cup_crate_box\\test\labels'.replace('\\', '/')
+    folder_path1 = 'C:\School\dataset\pre\cup_crate_box\\valid\labels'.replace('\\', '/')
 
     # Process the folder
     process_folder(folder_path)
+    process_folder(folder_path1)
