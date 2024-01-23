@@ -11,11 +11,12 @@ def runTrack(option, pathToFile=None):
 
 
 # loading pre-trained model saved at pt
-model = YOLO('Models/box_training_with_string/best.pt')
+model = YOLO('Models/grpchat_best.pt')
 
 # Best weights:
-# alpaca1: 'Models/box_training_with_string/best.pt'
+# alpaca1: 'Models/phase2_good_weights/best.pt'
+# box_short: 'Models/phase2_good_weights/best.pt'
 # 
 
-runTrack(1, pathToFile="local_env/videos/box_short.mov")
+runTrack(1, pathToFile="local_env/videos/alpaca1.mp4")
 
