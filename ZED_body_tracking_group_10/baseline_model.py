@@ -220,7 +220,9 @@ if __name__ == "__main__":
                      ("Gold", (0, 0, 0), (1, 1))]
     graph = Configuration()
     graph.initGraph(configuration)
-    graph.assign_probs()
+    # graph.assign_probs() # used for baseline
+    graph.set_id(0)
+    graph.assign_bayesian_probs()
 
     baseline_model = BaselineModel(graph.get_graph(), configuration)
     # print(baseline_model.predict("Cup000_root"))
