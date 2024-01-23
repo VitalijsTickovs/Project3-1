@@ -8,3 +8,4 @@ baselines/probability/__pycache__
 Data
 *mp4
 baselines/autoenc_basic/experiment_phase2/data.obj
+graph_vis.png
