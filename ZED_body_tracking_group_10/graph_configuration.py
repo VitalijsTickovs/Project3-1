@@ -8,6 +8,7 @@ from time import sleep
 import networkx as nx
 import matplotlib.pyplot as plt
 from Worker_Profiling.worker_probs import worker_dir, WorkerProbs
+from Bayesian_Network import bayesian_network as bn
 
 
 class Configuration:
@@ -122,6 +123,7 @@ class Configuration:
         self.worker_data['probs'] = new_probs
 
     def initGraph(self, input):
+        self.input = input
         G = nx.DiGraph()
         G.add_node("root", name=None, pos=None, prob=None)
         # append root to queue
@@ -214,6 +216,67 @@ class Configuration:
                 if edge_data["weight"] == 0:
                     G[u][v]["weight"] = round(prob_sum / edge_num, 3)
 
+    def assign_bayesian_probs(self):
+        object_counts_config = self.get_object_counts()
+        # print('CONFIG OBJ', object_counts_config)
+        G = self.G
+        for node in G.nodes:
+            objects = [''.join(filter(lambda x: not x.isdigit(), item)) for item in node.split("_")]
+            object_counts = {'Crate': 0, 'Feeder': 0, 'Cup': 0}
+            for object in objects:
+                if object != 'root':
+                    object_counts[object] = object_counts.get(object, 0) + 1
+            # print('NODE OBJ', object_counts)
+            object_counts_left = {key: object_counts_config[key] - object_counts.get(key, 0) for key in object_counts_config}
+            # print('DIFF OBJ', object_counts_left)
+
+            evidence={
+                'CrateAvailable': object_counts_left['Crate'] > 0,
+                'FeederAvailable': object_counts_left['Feeder'] > 0,
+                'CupAvailable': object_counts_left['Cup'] > 0,
+
+                'Worker': self.worker_id
+            }
+            print(f'------------------------ {node} -------------------------------')
+            print('evidence', evidence)
+            weights = bn.get_weights(evidence)
+            edges = G.out_edges([node])
+            num_of_edge_with_obj = {
+                'Crate': 0,
+                'Feeder': 0,
+                'Cup': 0
+            }
+            for edge in edges:
+                added_object = self.find_added_object(*edge)
+                num_of_edge_with_obj[added_object] += 1
+
+            for edge in edges:
+                added_object = self.find_added_object(*edge)
+                print('edge', edge)
+                print('weights', weights)
+                print(f"Objects added in the transition {edge}: {added_object}")
+                print()
+                nx.set_edge_attributes(G, {edge:{"weight": round(weights[added_object]/num_of_edge_with_obj[added_object], 4)},})
+
+    def get_object_counts(self):
+        object_counts = {
+            'Crate': 0,
+            'Feeder': 0,
+            'Cup': 0
+        }
+        for item in self.input:
+            object_type = item[0]
+            object_counts[object_type] = object_counts.get(object_type, 0) + 1
+
+        return object_counts
+
+    def find_added_object(self, parent, child):
+        splt_parent = set(parent.split("_"))
+        splt_child = set(child.split("_"))
+        difference = splt_child - splt_parent
+        difference = {''.join(filter(lambda x: not x.isdigit(), item)) for item in difference}
+        return list(difference)[0]
+
     def load_assign_worker(self):
         """
             Assigns probs from json file in Worker_Profiling/Profiles
@@ -250,6 +313,12 @@ if __name__ == "__main__":
 
     graph = Configuration()
     graph.initGraph(configuration)
+
+############### Needed for Bayesian Probs ########################
+    graph.set_id(0)
+    graph.assign_bayesian_probs()
+##################################################################
+
     # Draw the graph with edge labels
     pos = nx.spring_layout(graph.get_graph(), scale=3)
 
